@@ -24,7 +24,10 @@ namespace RainOverhaul.Content {
             return true;
         }
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource) {
-            TUUM = SoundEngine.PlaySound(sDeath with {Volume=1.2f,MaxInstances=3,SoundLimitBehavior = SoundLimitBehavior.ReplaceOldest}, Player.Center);
+            if (ModContent.GetInstance<RainConfig>().cCustomDeathSound)
+            {
+                TUUM = SoundEngine.PlaySound(sDeath with {Volume=1.2f,MaxInstances=3,SoundLimitBehavior = SoundLimitBehavior.ReplaceOldest}, Player.Center);
+            }
         }
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();

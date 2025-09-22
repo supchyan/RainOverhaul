@@ -26,6 +26,15 @@ Mods: {
 						◉ ◉ ◉ ◉ | ◌ ◌ ◌
 						'''
 				}
+
+				cCustomDeathSound: {
+					Label: Additional Death Sound
+					Tooltip:
+						'''
+						When enabled, death event will be followed by RainWorld death sound effect.
+						◉ ◉ ◉ ◉ | ◉ ◌ ◌
+						'''
+				}
 			}
 
 			RainConfigServer: {

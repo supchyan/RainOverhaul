@@ -1,8 +1,1 @@
-WHATS NEW:
-
-###
-# In-game wind affects mod's rain;
-# Better configuration file. Check this out;
-# Now "Rain World" mode has totally new rain system, called Cycles. Every day in the "Rain World" mode has 3 stages of cycles, which affects player's decisions in the world. Prepare to survive under the unfair rain. Each cycle appears in the screen, so you always know, what to expect;
-# Sound changes and fixes.
-###
+...

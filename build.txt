@@ -1,6 +1,6 @@
 displayName = [c/627599:Rain] [c/536381:Over][c/627599:ha][c/536381:ul]
 author = supchyan
-version = 1.7
+version = 1.7.2
 hideCode = true
 hideResources = true
 includeSource = true

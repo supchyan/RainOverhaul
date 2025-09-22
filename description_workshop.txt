@@ -1,14 +1,13 @@
-Atmospheric mod designed to make terraria more attractive.
-Enjoy the new rain~
+[h3]Atmospheric mod designed to make terraria more attractive. Enjoy the new rain~[/h3]
 [hr][/hr]
 Mod Content:
 [list]
     [*]Reworks vanilla rain effects in the game;
-    [*]Adds an [b]additional[/b] new rain system with multiplayer support. The game world now has cycles which will change each other and generate new game situations to a players;
-    [*]Mod config, that allows to control the rain effect's force and setup other parameters;
-    [*][strike]Unlimited bugs[/strike];
+    [*]Adds an [b]additional[/b] new rain system with multiplayer support. The game world now has cycles which will change each other and generate new game situations to players;
+    [*]Mod config, that allows you to control a rain effect's force and setup other parameters;
+    [*][strike]Unlimited bugs[/strike].
 [/list]
 
-[url=https://github.com/supchyan/RainOverhaul] Mod Github [/url]
+[url=https://github.com/supchyan/terraria-rain-overhaul]Github Source[/url]
 
 ◉ ◉ ◉ ◉ | ◌ ◌ ◌
