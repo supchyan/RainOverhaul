@@ -1,55 +1,100 @@
 Mods: {
 	RainOverhaul: {
 		Configs: {
-			RainConfig: {
-				DisplayName: Rain Overhaul Properties
+			ConfigClient: {
+				DisplayName: Client Settings
 
 				Headers: {
-					RainSettings: Settings
-					RainWorldExactly: Additionals
+					AmbientModeSettings: Ambient Mode
+					RainWorldModeSettings: Rain World Mode
 				}
 
-				cIntensity: {
+				rainIntensity: {
 					Label: Rain intensity
 					Tooltip:
 						'''
-						As less this parameter, as less rain effects.
+						[c/ddbb77:{$rainIntensity.Label}]
+						Affects rain intensity in {$ConfigClient.Headers.AmbientModeSettings}.
 						◉ ◉ ◉ ◌ | ◌ ◌ ◌
 						'''
 				}
 
-				cCycleIndicatorPos: {
-					Label: Cycle Indicator position
+				blueFilterIntensity: {
+					Label: Blue filter intensity
 					Tooltip:
 						'''
-						Affects position of the cycle's indicator in the "Rain World" mode.
+						[c/ddbb77:{$blueFilterIntensity.Label}]
+						Affects blue filter intensity in {$ConfigClient.Headers.AmbientModeSettings}.
 						◉ ◉ ◉ ◉ | ◌ ◌ ◌
 						'''
 				}
 
-				cCustomDeathSound: {
-					Label: Additional Death Sound
+				deathSoundInAmbientMode: {
+					Label: Rain World Death Sound
 					Tooltip:
 						'''
-						When enabled, death event will be followed by RainWorld death sound effect.
+						[c/ddbb77:{$deathSoundInAmbientMode.Label}]
+						When enabled, player's death will be followed by Rain World's death sound effect.
 						◉ ◉ ◉ ◉ | ◉ ◌ ◌
 						'''
 				}
-			}
 
-			RainConfigServer: {
-				DisplayName: Rain Overhaul World Properties
-				Headers.RainSettingsServer: World Settings
-
-				cRainWorld: {
-					Label: '''"Rain World" Mode'''
+				quakeImpulseInSafeArea: {
+					Label: Quake intensity in safe area
 					Tooltip:
 						'''
-						This toggle adds cycles, which completely reworks rain system.
-						Run and hide to stay alive, like in "Rain World"!
+						[c/dd8877:{$quakeImpulseInSafeArea.Label}]
+						Affects safe area quake intensity during the rain in {$ConfigServer.isRainWorldMode.Label}.
+						'''
+				}
 
-						[c/888888:Disables "{$RainConfig.cIntensity.Label}" parameter.]
-						◉ ◉ ◉ ◉ | ◉ ◌ ◌
+				cycleIndicatorPosition: {
+					Label: Cycle indicator position
+					Tooltip:
+						'''
+						[c/dd8877:{$cycleIndicatorPosition.Label}]
+						Affects position of cycles indicator in {$ConfigServer.isRainWorldMode.Label}.
+						[c/aaaaaa:This option saves automatically after being changed.]
+						'''
+					ValueUpdatedText: Value updated
+				}
+
+				cycleIndicatorPositionReset: {
+					Tooltip: "[c/aaaaaa:Resets indicator position.]"
+					Label: Restore Defaults
+				}
+			}
+
+			ConfigServer: {
+				DisplayName: Server Settings
+				Headers.RainWorldModeSettings: Rain World Mode
+
+				isRainWorldMode: {
+					Label: "[c/8899bb:Rain] [c/7788aa:Wo][c/8899bb:rld] [c/7788aa:Mode]"
+					Tooltip:
+						'''
+						{$isRainWorldMode.Label}
+						Replaces {$ConfigClient.Headers.AmbientModeSettings} and adds cycles system from the Rain World game. Aware of heavy rain!
+						[c/aaaaaa:This option affects in-game experience.]
+						'''
+				}
+
+				rainWorldAffectsTownNPSs: {
+					Label: Rain affects town NPCs
+					Tooltip:
+						'''
+						[c/dd8877:{$rainWorldAffectsTownNPSs.Label}]
+						Set it to true if you want to squash careless town NPCs during the rain in {$isRainWorldMode.Label}.
+						'''
+				}
+
+				rainWorldAffectsOtherNPCs: {
+					Label: Rain affects NPCs
+					Tooltip:
+						'''
+						[c/dd8877:{$rainWorldAffectsOtherNPCs.Label}]
+						Set it to true if you want to squash careless NPCs during the rain in {$isRainWorldMode.Label}.
+						[c/aaaaaa:This option doesn't affect town NPCs.]
 						'''
 				}
 			}
@@ -58,24 +103,19 @@ Mods: {
 		RainDeathReason: died by virtue of the nature forces.
 
 		Biomes: {
-			aDimRainSound: {
-				DisplayName: ""
-				TownNPCDialogueName: ""
+			DimRainWorldBiome: {
+				DisplayName: Shelter
+				TownNPCDialogueName: The Shelter
 			}
 
-			aRainSound: {
-				DisplayName: ""
-				TownNPCDialogueName: ""
-			}
-
-			aQuakeSound: {
-				DisplayName: ""
-				TownNPCDialogueName: ""
+			RainWorldBiome: {
+				DisplayName: Heavy Rain
+				TownNPCDialogueName: The Heavy Rain
 			}
 		}
 
 		Buffs: {
-			ShelterNotification: {
+			RainSystemDebuff: {
 				Description: The rain is too heavy! Find shelter quickly to prevent the inevitable!
 				DisplayName: It's raining somewhere else?
 			}
