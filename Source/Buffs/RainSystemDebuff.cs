@@ -6,7 +6,8 @@ namespace RainOverhaul.Source.Buffs;
 /// <summary>
 /// This debuff applies for players and NPCs server is in RW mode.
 /// </summary>
-public class RainSystemDebuff : ModBuff {
+public class RainSystemDebuff : ModBuff
+{
     public override string Texture => "RainOverhaul/Content/Textures/ShelterIcon";
 
     public override void SetStaticDefaults()

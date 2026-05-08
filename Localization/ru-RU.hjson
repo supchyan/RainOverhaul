@@ -2,122 +2,123 @@ Mods: {
 	RainOverhaul: {
 		Configs: {
 			ConfigClient: {
-				// DisplayName: Client Settings
+				DisplayName: Локальные настройки
 
 				Headers: {
-					// AmbientModeSettings: Ambient Mode
-					// RainWorldModeSettings: Rain World Mode
+					AmbientModeSettings: Режим Ambient
+					RainWorldModeSettings: Режим Rain World
 				}
 
 				rainIntensity: {
-					// Label: Rain intensity
-					/* Tooltip:
+					Label: Интенсивность дождя
+					Tooltip:
 						'''
 						[c/ddbb77:{$rainIntensity.Label}]
-						Affects rain intensity in {$ConfigClient.Headers.AmbientModeSettings}.
+						Влияет на интенсивность эффектов дождя когда активен {$ConfigClient.Headers.AmbientModeSettings}.
 						◉ ◉ ◉ ◌ | ◌ ◌ ◌
-						''' */
+						'''
 				}
 
 				blueFilterIntensity: {
-					// Label: Blue filter intensity
-					/* Tooltip:
+					Label: Интенсивность синего фильтра
+					Tooltip:
 						'''
 						[c/ddbb77:{$blueFilterIntensity.Label}]
-						Affects blue filter intensity in {$ConfigClient.Headers.AmbientModeSettings}.
+						Влияет на интенсивность синего фильтра когда активен {$ConfigClient.Headers.AmbientModeSettings}.
 						◉ ◉ ◉ ◉ | ◌ ◌ ◌
-						''' */
+						'''
 				}
 
 				deathSoundInAmbientMode: {
-					// Label: Rain World Death Sound
-					/* Tooltip:
+					Label: Звук смерти из Rain World
+					Tooltip:
 						'''
 						[c/ddbb77:{$deathSoundInAmbientMode.Label}]
-						When enabled, player's death will be followed by Rain World's death sound effect.
+						Если активно, смерть игрока будет сопровождаться звуком смерти из Rain World.
 						◉ ◉ ◉ ◉ | ◉ ◌ ◌
-						''' */
+						'''
 				}
 
 				quakeImpulseInSafeArea: {
-					// Label: Quake intensity in safe area
-					/* Tooltip:
+					Label: Интенсивность тряски в укрытии
+					Tooltip:
 						'''
 						[c/dd8877:{$quakeImpulseInSafeArea.Label}]
-						Affects safe area quake intensity during the rain in {$ConfigServer.isRainWorldMode.Label}.
-						''' */
+						Влияет на интенсивность эффектов тряски в укрытии когда активен {$ConfigServer.isRainWorldMode.Label}.
+						'''
 				}
 
 				cycleIndicatorPosition: {
-					// Label: Cycle indicator position
-					/* Tooltip:
+					Label: Положение индикатора
+					Tooltip:
 						'''
 						[c/dd8877:{$cycleIndicatorPosition.Label}]
-						Affects position of cycles indicator in {$ConfigServer.isRainWorldMode.Label}.
-						[c/aaaaaa:This option saves automatically after being changed.]
-						''' */
-					// ValueUpdatedText: Value updated
+						Влияет на положение индикатора циклов
+						когда активен {$ConfigServer.isRainWorldMode.Label}.
+						[c/aaaaaa:Эта опция сохраняется автоматически после изменения.]
+						'''
+					ValueUpdatedText: Изменения сохранены
 				}
 
 				cycleIndicatorPositionReset: {
-					// Tooltip: "[c/aaaaaa:Resets indicator position.]"
-					// Label: Restore Defaults
+					Tooltip: "[c/aaaaaa:Обнуляет положение индикатора.]"
+					Label: По умолчанию
 				}
 			}
 
 			ConfigServer: {
-				// DisplayName: Server Settings
-				// Headers.RainWorldModeSettings: Rain World Mode
+				DisplayName: Настройки сервреа
+				Headers.RainWorldModeSettings: Режим Rain World
 
 				isRainWorldMode: {
-					// Label: "[c/8899bb:Rain] [c/7788aa:Wo][c/8899bb:rld] [c/7788aa:Mode]"
-					/* Tooltip:
+					Label: "[c/8899bb:Ре][c/7788aa:жим] [c/8899bb:Rain] [c/7788aa:World]"
+					Tooltip:
 						'''
 						{$isRainWorldMode.Label}
-						Replaces {$ConfigClient.Headers.AmbientModeSettings} and adds cycles system from the Rain World game. Aware of heavy rain!
-						[c/aaaaaa:This option affects in-game experience.]
-						''' */
+						Заменяет собой {$ConfigClient.Headers.AmbientModeSettings}, добавляя систему циклов из Rain World. Избегайте внезапных дождей!
+						[c/aaaaaa:Эта опция сильно меняет игровой опыт.]
+						'''
 				}
 
 				rainWorldAffectsTownNPSs: {
-					// Label: Rain affects town NPCs
-					/* Tooltip:
+					Label: Ливень затрагивает городских НИПов
+					Tooltip:
 						'''
 						[c/dd8877:{$rainWorldAffectsTownNPSs.Label}]
-						Set it to true if you want to squash careless town NPCs during the rain in {$isRainWorldMode.Label}.
-						''' */
+						Включите, если хотите давить невнимательных городских НИПов ливнем когда активен {$isRainWorldMode.Label}.
+						'''
 				}
 
 				rainWorldAffectsOtherNPCs: {
-					// Label: Rain affects NPCs
-					/* Tooltip:
+					Label: Ливень затрагивает НИПов
+					Tooltip:
 						'''
 						[c/dd8877:{$rainWorldAffectsOtherNPCs.Label}]
-						Set it to true if you want to squash careless NPCs during the rain in {$isRainWorldMode.Label}.
-						[c/aaaaaa:This option doesn't affect town NPCs.]
-						''' */
+						Включите, если хотите давить невнимательных НИПов ливнем когда активен {$isRainWorldMode.Label}.
+						[c/aaaaaa:Эта опция не влияет на городских НИПов.]
+						'''
 				}
 			}
 		}
 
-		RainDeathReason: помер(-ла) в связи с погодными условиями.
+		RainDeathReason: погиб(-ла) силами природы.
 
 		Biomes: {
 			DimRainWorldBiome: {
-				// DisplayName: Shelter
-				// TownNPCDialogueName: The Shelter
+				DisplayName: Укрытие
+				TownNPCDialogueName: Укрытие
 			}
 
 			RainWorldBiome: {
-				// DisplayName: Heavy Rain
-				// TownNPCDialogueName: The Heavy Rain
+				DisplayName: Ливень
+				TownNPCDialogueName: Ливень
 			}
 		}
 
 		Buffs: {
 			RainSystemDebuff: {
-				// Description: The rain is too heavy! Find shelter quickly to prevent the inevitable!
-				// DisplayName: It's raining somewhere else?
+				Description: Дождь слишком сильный! Скорее найдите укрытие!
+				DisplayName: Где-то дождь идёт...
 			}
 		}
 	}

@@ -186,7 +186,7 @@ public class PlayerRainSystem : ModPlayer
 
         ExtraIntensity = Main.LocalPlayer.ZoneBeach || Main.LocalPlayer.ZoneJungle ? 1.4f : 1f;
 
-        MaxRaining = RainOverhaul.Lerp(MaxRaining, Main.maxRaining, .01f);
+        MaxRaining = MathHelper.Lerp(MaxRaining, Main.maxRaining, .01f);
 
         Intensity       = 550f * MaxRaining / (20f * 645f) * ConfigClient.Instance.rainIntensity;
         RW_Intensity    = 550f * MaxRaining / (20f * 645f) * 2.5f;

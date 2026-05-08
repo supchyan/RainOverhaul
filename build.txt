@@ -1,8 +1,8 @@
 displayName = [c/8899bb:Rain] [c/7788aa:Over][c/8899bb:ha][c/7788aa:ul]
 author = supchyan
-version = 1.7.3
-hideCode = false
-hideResources = false
-includeSource = true
+version = 1.7.4
+hideCode = true
+hideResources = true
+includeSource = false
 playableOnPreview = true
 homepage = https://github.com/supchyan/RainOverhaul

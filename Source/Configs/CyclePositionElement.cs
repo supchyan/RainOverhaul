@@ -10,10 +10,8 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
-using Terraria.UI.Chat;
 
 namespace RainOverhaul.Source.Configs;
 public class CyclePositionElement : ConfigElement

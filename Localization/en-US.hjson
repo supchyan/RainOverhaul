@@ -14,7 +14,7 @@ Mods: {
 					Tooltip:
 						'''
 						[c/ddbb77:{$rainIntensity.Label}]
-						Affects rain intensity in {$ConfigClient.Headers.AmbientModeSettings}.
+						Affects rain filter intensity in {$ConfigClient.Headers.AmbientModeSettings}.
 						◉ ◉ ◉ ◌ | ◌ ◌ ◌
 						'''
 				}
@@ -44,7 +44,7 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$quakeImpulseInSafeArea.Label}]
-						Affects safe area quake intensity during the rain in {$ConfigServer.isRainWorldMode.Label}.
+						Affects safe area quake filter intensity during the rain in {$ConfigServer.isRainWorldMode.Label}.
 						'''
 				}
 
@@ -75,7 +75,7 @@ Mods: {
 						'''
 						{$isRainWorldMode.Label}
 						Replaces {$ConfigClient.Headers.AmbientModeSettings} and adds cycles system from the Rain World game. Aware of heavy rain!
-						[c/aaaaaa:This option affects in-game experience.]
+						[c/aaaaaa:This option heavily affects in-game experience.]
 						'''
 				}
 

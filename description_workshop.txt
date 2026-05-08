@@ -1,6 +1,6 @@
 [h3]Atmospheric mod designed to make terraria more attractive.[/h3]
 
-[h4]Includes 2 configurable rain modes to play with:[/h4]
+Includes 2 configurable rain modes to play with:
 [list]
     [*][b]Ambient Mode[/b] - vanilla rain with customizable attractive filters.
     [*][b]Rain World Mode[/b] - something similar to Rain World game system with cycles and fall rain damage.
@@ -12,4 +12,4 @@
 
 ◉ ◉ ◉ ◉ | ◌ ◌ ◌
 
-:SLUGCATSLEEP: <- lil bro sleepn'
+:slugcatsleep: <- а где
