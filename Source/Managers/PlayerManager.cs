@@ -28,6 +28,19 @@ public class PlayerManager : ModPlayer
                     !Main.LocalPlayer.ZoneSnow;
         }
     }
+    /// <summary>
+    /// True whenever player is in quake area.
+    /// </summary>
+    public static bool IsPlayerInQuakeArea
+    {
+        get
+        {
+            return  !Main.LocalPlayer.ZoneUnderworldHeight &&
+                    !Main.LocalPlayer.ZoneNormalSpace &&
+                    !Main.LocalPlayer.ZoneSandstorm &&
+                    !Main.LocalPlayer.ZoneSnow;
+        }
+    }
     // ---
     public override void OnEnterWorld()
     {

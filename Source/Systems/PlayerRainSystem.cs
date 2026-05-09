@@ -5,7 +5,6 @@ using RainOverhaul.Source.Enums;
 using RainOverhaul.Source.Managers;
 using System;
 using Terraria;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -147,9 +146,10 @@ public class PlayerRainSystem : ModPlayer
     {
         base.OnEnterWorld();
 
-        // enable shaders
-        Filters.Scene.Activate("RainFilter");
-        Filters.Scene.Activate("RainShake");
+        // activate filters
+        FilterManager.RainFilter.Activate();
+        FilterManager.AdditionalRainFilter.Activate();
+        FilterManager.QuakeFilter.Activate();
 
         if (Main.netMode == NetmodeID.Server && Main.maxRaining == 0)
         {
@@ -205,13 +205,24 @@ public class PlayerRainSystem : ModPlayer
                 VanillaTransition = VanillaTransition > 0f ? VanillaTransition - .005f : 0f;
             }
 
-            // corelate rain filter based on current max raining value
-            Filters.Scene["RainFilter"].GetShader().UseOpacity(Intensity * VanillaTransition * ExtraIntensity)
-                .UseIntensity(VanillaTransition * ConfigClient.Instance.blueFilterIntensity).UseProgress(-4f * Main.windSpeedCurrent);
+            // ambient mode intensities
+            var rainIntensity = Intensity * VanillaTransition * ExtraIntensity;
+            var blueIntensity = VanillaTransition * ConfigClient.Instance.blueFilterIntensity;
+
+            // About AdditionalRainFilter and RainFilter:
+            // AdditionalRainFilter is more like effets background,
+            // while RainFilter is the rain effect on foreground.
+            // Applying one to another causes the good looking rain effect!
+
+            // update additional rain filter
+            FilterManager.AdditionalRainFilter.Update(
+                .2f * rainIntensity, 0f, -.4f * MathF.Sin(.05f * (float)Main.time));
+
+            // update rain filter
+            FilterManager.RainFilter.Update(rainIntensity, blueIntensity, -4f * Main.windSpeedCurrent);
 
             // disable quake effects
-            Filters.Scene["RainShake"].GetShader()
-                .UseOpacity(0f).UseIntensity(0f);
+            FilterManager.QuakeFilter.Update(0f, 0f);
         } 
         else // when rain mode enabled:
         {
@@ -230,14 +241,14 @@ public class PlayerRainSystem : ModPlayer
                 }
             }
 
-            // corelate rain filter based on current RW mode rain force
-            Filters.Scene["RainFilter"].GetShader()
-                .UseOpacity(.1f * RW_RainForce)
-                .UseIntensity(RW_RainForce).UseProgress(-4f * Main.windSpeedCurrent);
+            // update additional rain filter
+            FilterManager.AdditionalRainFilter.Update(.1f * RW_RainForce, 0f, 4f * Main.windSpeedCurrent);
 
-            // use quake effects in RW mode
-            Filters.Scene["RainShake"].GetShader()
-                .UseOpacity(RW_QuakeImpulse).UseIntensity(3.7f);
+            // update rain filter
+            FilterManager.RainFilter.Update(.1f * RW_RainForce, RW_RainForce, -4f * Main.windSpeedCurrent);
+
+            // update quake filter
+            FilterManager.QuakeFilter.Update(RW_QuakeImpulse, 3.7f);
 
             // Custom rain behavior when in "RainWorld" mode
             switch(RW_CurrentCycle)
@@ -277,12 +288,7 @@ public class PlayerRainSystem : ModPlayer
                     RW_QuakeStrength = 1f + (float)(Main.time - CycleClearTimeEnd) / 
                                             (float)(Main.dayLength - CycleClearTimeEnd);
 
-                    bool quakeCondition =   !Main.LocalPlayer.ZoneUnderworldHeight &&
-                                            !Main.LocalPlayer.ZoneNormalSpace &&
-                                            !Main.LocalPlayer.ZoneSandstorm &&
-                                            !Main.LocalPlayer.ZoneSnow;
-
-                    if (quakeCondition)
+                    if (PlayerManager.IsPlayerInQuakeArea)
                     {
                         RW_QuakeImpulse = (float)Math.Sin(
                                 MathHelper.ToRadians((float)(Main.time - CycleClearTimeEnd) / 2f)

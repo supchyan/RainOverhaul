@@ -101,7 +101,7 @@ Mods: {
 			}
 		}
 
-		RainDeathReason: погиб(-ла) силами природы.
+		RainDeathReason: погиб(-ла) под дождём.
 
 		Biomes: {
 			DimRainWorldBiome: {

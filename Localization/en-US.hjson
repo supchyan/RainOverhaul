@@ -100,7 +100,7 @@ Mods: {
 			}
 		}
 
-		RainDeathReason: died by virtue of the nature forces.
+		RainDeathReason: has drown under the rain.
 
 		Biomes: {
 			DimRainWorldBiome: {
