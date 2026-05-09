@@ -8,7 +8,7 @@ Includes 2 configurable rain modes to play with:
 
 [i]This mod supports multiplayer.[/i]
 
-[url=https://github.com/supchyan/terraria-rain-overhaul]Github Source[/url]
+[url=https://github.com/supchyan/RainOverhaul]Github Source[/url]
 
 ◉ ◉ ◉ ◉ | ◌ ◌ ◌
 
