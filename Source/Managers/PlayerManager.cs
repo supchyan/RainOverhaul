@@ -1,22 +1,44 @@
-using System;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ModLoader;
-using Terraria.Localization;
-using Terraria.DataStructures;
-using ReLogic.Utilities;
+using RainOverhaul.Source.Audio;
 using RainOverhaul.Source.Buffs;
 using RainOverhaul.Source.Configs;
-using RainOverhaul.Source.Audio;
+using ReLogic.Utilities;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace RainOverhaul.Source.Managers;
 
 public class PlayerManager : ModPlayer
 {
-    private SlotId SoundSlot { get; set; }
+    /// <summary>
+    /// True whenever WOTG's Rift Eclipse is happening.
+    /// </summary>
+    public static bool IsRiftEclipse
+    {
+        get
+        {
+            if (!ConfigServer.Instance.isNoxusBossSupport)
+            {
+                return false;
+            }
+
+            if (!ModLoader.TryGetMod("NoxusBoss", out Mod NoxusBoss))
+            {
+                return false;
+            }
+
+            NoxusBoss.TryFind<ModSystem>("RiftEclipseManagementSystem", out ModSystem RiftEclipseManagementSystem);
+
+            bool RiftEclipseOngoing = (bool)RiftEclipseManagementSystem.GetType()
+                .GetProperty("RiftEclipseOngoing").GetValue(null);
+
+            return RiftEclipseOngoing;
+        }
+    }
     /// <summary>
     /// True whenever player is in rain area.
-    /// [TODO: add WOTG AoE snow covering support]
     /// </summary>
     public static bool IsPlayerInRainArea 
     { 
@@ -25,7 +47,8 @@ public class PlayerManager : ModPlayer
             return   Main.LocalPlayer.ZoneRain &&
                     !Main.LocalPlayer.ZoneNormalSpace &&
                     !Main.LocalPlayer.ZoneSandstorm &&
-                    !Main.LocalPlayer.ZoneSnow;
+                    !Main.LocalPlayer.ZoneSnow &&
+                    !IsRiftEclipse;
         }
     }
     /// <summary>
@@ -38,10 +61,11 @@ public class PlayerManager : ModPlayer
             return  !Main.LocalPlayer.ZoneUnderworldHeight &&
                     !Main.LocalPlayer.ZoneNormalSpace &&
                     !Main.LocalPlayer.ZoneSandstorm &&
-                    !Main.LocalPlayer.ZoneSnow;
+                    !Main.LocalPlayer.ZoneSnow &&
+                    !IsRiftEclipse;
         }
     }
-    // ---
+    private SlotId DeathSoundSlot { get; set; }
     public override void OnEnterWorld()
     {
         base.OnEnterWorld();
@@ -71,12 +95,12 @@ public class PlayerManager : ModPlayer
         // play rain world death sound if enabled in config or player is in RW mode
         if (ConfigClient.Instance.deathSoundInAmbientMode || ConfigServer.Instance.isRainWorldMode)
         {
-            SoundSlot = SoundEngine.PlaySound(
+            DeathSoundSlot = SoundEngine.PlaySound(
                 SoundStyles.DeathSound with { 
                     Volume = 1.2f, 
                     MaxInstances = 3, 
                     SoundLimitBehavior = SoundLimitBehavior.ReplaceOldest
-                }, 
+                },
                 Player.Center
             );
         }

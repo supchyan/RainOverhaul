@@ -67,8 +67,12 @@ Mods: {
 			}
 
 			ConfigServer: {
-				DisplayName: Настройки сервреа
-				Headers.RainWorldModeSettings: Режим Rain World
+				DisplayName: Настройки сервера
+
+				Headers: {
+					RainWorldModeSettings: Режим Rain World
+					MiscSettings: Другое
+				}
 
 				isRainWorldMode: {
 					Label: "[c/8899bb:Ре][c/7788aa:жим] [c/8899bb:Rain] [c/7788aa:World]"
@@ -96,6 +100,16 @@ Mods: {
 						[c/dd8877:{$rainWorldAffectsOtherNPCs.Label}]
 						Включите, если хотите давить невнимательных НИПов ливнем когда активен {$isRainWorldMode.Label}.
 						[c/aaaaaa:Эта опция не влияет на городских НИПов.]
+						'''
+				}
+
+				isNoxusBossSupport: {
+					Label: Совместимость с Wrath of the Gods
+					Tooltip:
+						'''
+						[c/ff6688:{$isNoxusBossSupport.Label}]
+						Включите, если хотите приостановить работу Rain Overhaul во время Rift Eclipse.
+						[c/aaaaaa:Инзначально, Rift Eclipse заменяет весь дождь на снег.]
 						'''
 				}
 			}

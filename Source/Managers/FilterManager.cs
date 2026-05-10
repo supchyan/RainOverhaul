@@ -34,7 +34,8 @@ public class FilterManager
         public static void Update(float rainIntensity, float blueIntensity, float rainDirection)
         {
             Filters.Scene["RainFilter"].GetShader().UseOpacity(rainIntensity)
-                .UseIntensity(blueIntensity).UseProgress(rainDirection);
+                .UseIntensity(blueIntensity).UseProgress(rainDirection)
+                .UseImage("Images/Misc/noise", 0, SamplerState.LinearWrap);
         }
     }
     public class AdditionalRainFilter
@@ -60,7 +61,8 @@ public class FilterManager
         public static void Update(float rainIntensity, float blueIntensity, float rainDirection)
         {
             Filters.Scene["AdditionalRainFilter"].GetShader().UseOpacity(rainIntensity)
-                .UseIntensity(blueIntensity).UseProgress(rainDirection);
+                .UseIntensity(blueIntensity).UseProgress(rainDirection)
+                .UseImage("Images/Misc/Perlin", 0, SamplerState.LinearWrap);
         }
     }
     public class QuakeFilter

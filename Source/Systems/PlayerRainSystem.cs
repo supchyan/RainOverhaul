@@ -254,19 +254,25 @@ public class PlayerRainSystem : ModPlayer
             switch(RW_CurrentCycle)
             {
                 case CycleState.Clear:
-                    Main.raining = false;
-
                     DecreaseQuakeImpulse();
                     DecreaseRainForce();
 
                     // disable vanilla rain dust
-                    if(Main.maxRaining != 0f)
+                    if (Main.maxRaining != 0f)
                     {
                         Main.maxRaining = 0f;
                     }
 
+                    // don't change cycles during rift eclipse
+                    if (PlayerManager.IsRiftEclipse)
+                    {
+                        break;
+                    }
+
+                    Main.raining = false;
+
                     // Cycle state swap
-                    if(Main.time >= CycleClearTimeEnd && Main.IsItDay())
+                    if (Main.time >= CycleClearTimeEnd && Main.IsItDay())
                     {
                         RW_CurrentCycle = CycleState.Quake;
                     }
@@ -278,6 +284,12 @@ public class PlayerRainSystem : ModPlayer
                 break;
 
                 case CycleState.Quake:
+                    if (PlayerManager.IsRiftEclipse)
+                    {
+                        RW_CurrentCycle = CycleState.Clear;
+                        break;
+                    }
+
                     Main.raining = false;
                     
                     if (Main.maxRaining != 0f)
@@ -316,6 +328,12 @@ public class PlayerRainSystem : ModPlayer
                 break;
 
                 case CycleState.Rain:
+                    if (PlayerManager.IsRiftEclipse)
+                    {
+                        RW_CurrentCycle = CycleState.Clear;
+                        break;
+                    }
+
                     if (!Main.raining)
                     {
                         // force rain to start

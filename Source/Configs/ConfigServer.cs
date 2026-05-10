@@ -18,4 +18,8 @@ public class ConfigServer : ModConfig
 
     [DefaultValue(true)]
     public bool rainWorldAffectsOtherNPCs; // whenever RW mode rain damages npcs beyond town flag.
+
+    [Header("MiscSettings")]
+    [DefaultValue(true)]
+    public bool isNoxusBossSupport; // whenever this mod supports WOTG
 }

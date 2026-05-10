@@ -67,7 +67,11 @@ Mods: {
 
 			ConfigServer: {
 				DisplayName: Server Settings
-				Headers.RainWorldModeSettings: Rain World Mode
+
+				Headers: {
+					RainWorldModeSettings: Rain World Mode
+					MiscSettings: Other
+				}
 
 				isRainWorldMode: {
 					Label: "[c/8899bb:Rain] [c/7788aa:Wo][c/8899bb:rld] [c/7788aa:Mode]"
@@ -95,6 +99,16 @@ Mods: {
 						[c/dd8877:{$rainWorldAffectsOtherNPCs.Label}]
 						Set it to true if you want to squash careless NPCs during the rain in {$isRainWorldMode.Label}.
 						[c/aaaaaa:This option doesn't affect town NPCs.]
+						'''
+				}
+
+				isNoxusBossSupport: {
+					Label: Wrath of the Gods Compitability
+					Tooltip:
+						'''
+						[c/ff6688:{$isNoxusBossSupport.Label}]
+						Set it to true if you want to disable Rain Overhaul during Rift Eclipse.
+						[c/aaaaaa:Originally, Rift Eclipse replaces rain with a snow.]
 						'''
 				}
 			}
