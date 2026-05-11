@@ -22,15 +22,17 @@ public class TitleScreenRain : ModSystem
 
         // [TODO:]
         // Draw rain in main menu sometimes...
-        //if (!Main.gameMenu || !isContentLoaded)
-        //{
-        //    EffectsController.MenuRainEffect.Instance.Deactivate();
-        //    return;
-        //}
-        //else
-        //{
-        //    EffectsController.MenuRainEffect.Instance.Activate();
-        //    EffectsController.MenuRainEffect.Instance.SetParameter("RainIntensity", 1f);
-        //}
+        if (!Main.gameMenu || !isContentLoaded)
+        {
+            EffectsController.MenuRainEffect.Instance.Deactivate();
+            return;
+        }
+        else
+        {
+            // deactivate in-world effects
+            EffectsController.RainEffect.Instance.Deactivate();
+            EffectsController.AlternateRainEffect.Instance.Deactivate();
+            EffectsController.QuakeEffect.Instance.Deactivate();
+        }
     }
 }

@@ -8,6 +8,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ModHelpers = RainOverhaul.Source.Helpers;
 
 namespace RainOverhaul.Source.Systems; 
 public class PlayerRainSystem : ModPlayer
@@ -19,7 +20,7 @@ public class PlayerRainSystem : ModPlayer
     /// <summary>
     /// Rain intensity used in vanilla rain system.
     /// </summary>
-    private float RainIntensity                     { get; set; } = 0f;
+    private float RainIntensity                 { get; set; } = 0f;
     /// <summary>
     /// Rain transition offset in Ambient mode.
     /// </summary>
@@ -74,9 +75,9 @@ public class PlayerRainSystem : ModPlayer
     private float RW_QuakeIntensityMinValue     { get; } = 4.07f;
 
     // In-game world time values used in RainWorld mode
-    private int CycleClearTimeEnd   { get; } = 51700; // time when quake cycle starts 
-    private int CycleQuakeTimeEnd   { get; } = 53999; // time when rain cycle starts 
-    private int CycleRainTimeEnd    { get; } = 16200; // time when clear cycle starts
+    private const int CycleClearTimeEnd = 51700; // time when quake cycle starts 
+    private const int CycleQuakeTimeEnd = 53999; // time when rain cycle starts 
+    private const int CycleRainTimeEnd  = 16200; // time when clear cycle starts
 
     // Lerp offset for transitions between effects.
     private float GeneralTransition { get; } = .04f;
@@ -86,45 +87,71 @@ public class PlayerRainSystem : ModPlayer
     /// </summary>
     private void IncreaseRainOffset()
     {
-        RW_RainOffset = MathHelper.Lerp(RW_RainOffset, 1f, GeneralTransition);
+        RW_RainOffset = ModHelpers.MathHelper.Lerp(RW_RainOffset, 1f, GeneralTransition);
     }
     /// <summary>
     /// In loop smoothly decreases RW_RainOffset value.
     /// </summary>
     private void DecreaseRainOffset()
     {
-        RW_RainOffset = MathHelper.Lerp(RW_RainOffset, 0f, GeneralTransition);
+        RW_RainOffset = ModHelpers.MathHelper.Lerp(RW_RainOffset, 0f, GeneralTransition);
     }
     /// <summary>
     /// In loop smoothly increases RW_QuakeIntensity value until it's limit.
     /// </summary>
     private void IncreaseQuakeIntensity()
     {
-        RW_QuakeIntensity = MathHelper.Lerp(RW_QuakeIntensity, RW_QuakeIntensityMaxValue, GeneralTransition);
+        RW_QuakeIntensity = ModHelpers.MathHelper.Lerp(RW_QuakeIntensity, RW_QuakeIntensityMaxValue, GeneralTransition);
     }
     /// <summary>
     /// In loop smoothly decreases RW_QuakeIntensity value.
     /// </summary>
     private void DecreaseQuakeIntensity()
     {
-        RW_QuakeIntensity = MathHelper.Lerp(RW_QuakeIntensity, 0f, GeneralTransition);
+        RW_QuakeIntensity = ModHelpers.MathHelper.Lerp(RW_QuakeIntensity, 0f, GeneralTransition);
     }
     /// <summary>
     /// Lowers RW_QuakeIntensity whenever needed.
     /// </summary>
     private void SoftenQuakeIntensity()
     {
-        RW_QuakeIntensity = MathHelper.Lerp(RW_QuakeIntensity, ConfigClient.Instance.quakeImpulseInSafeArea, GeneralTransition);
+        RW_QuakeIntensity = ModHelpers.MathHelper.Lerp(RW_QuakeIntensity, ConfigClient.Instance.quakeImpulseInSafeArea, GeneralTransition);
+    }
+    /// <summary>
+    /// Swaps to clear cycle if possible.
+    /// </summary>
+    private void TrySwapToClearCycle()
+    {
+        if (Main.time < CycleClearTimeEnd && Main.IsItDay() ||
+            Main.time >= CycleRainTimeEnd && !Main.IsItDay())
+        {
+            RW_CurrentCycle = CycleState.Clear;
+        }
+    }
+    /// <summary>
+    /// Swaps to quake cycle if possible.
+    /// </summary>
+    private void TrySwapToQuakeCycle()
+    {
+        if (Main.time >= CycleClearTimeEnd && Main.IsItDay())
+        {
+            RW_CurrentCycle = CycleState.Quake;
+        }
+    }
+    /// <summary>
+    /// Swaps to rain cycle if possible.
+    /// </summary>
+    private void TrySwapToRainCycle()
+    {
+        if (Main.time < CycleRainTimeEnd && !Main.IsItDay())
+        {
+            RW_CurrentCycle = CycleState.Rain;
+        }
     }
 
     public override void OnEnterWorld()
     {
         base.OnEnterWorld();
-
-        // activate effects
-        EffectsController.RainEffect.Instance.Activate();
-        EffectsController.AlternateRainEffect.Instance.Activate();
-        EffectsController.QuakeEffect.Instance.Activate();
 
         if (Main.netMode == NetmodeID.Server && Main.maxRaining == 0)
         {
@@ -135,6 +162,11 @@ public class PlayerRainSystem : ModPlayer
 
     public override void PostUpdate()
     {
+        // activate effects
+        EffectsController.RainEffect.Instance.Activate();
+        EffectsController.AlternateRainEffect.Instance.Activate();
+        EffectsController.QuakeEffect.Instance.Activate();
+
         // Sync rain with server all time 
         Main.SyncRain();
 
@@ -254,15 +286,8 @@ public class PlayerRainSystem : ModPlayer
 
                     Main.raining = false;
 
-                    // Cycle state swap
-                    if (Main.time >= CycleClearTimeEnd && Main.IsItDay())
-                    {
-                        RW_CurrentCycle = CycleState.Quake;
-                    }
-                    if(Main.time < CycleRainTimeEnd && !Main.IsItDay())
-                    {
-                        RW_CurrentCycle = CycleState.Rain;
-                    }
+                    TrySwapToQuakeCycle();
+                    TrySwapToRainCycle();
 
                 break;
 
@@ -273,6 +298,9 @@ public class PlayerRainSystem : ModPlayer
                         break;
                     }
 
+                    TrySwapToClearCycle();
+                    TrySwapToRainCycle();
+
                     Main.raining = false;
                     
                     if (Main.maxRaining != 0f)
@@ -280,35 +308,26 @@ public class PlayerRainSystem : ModPlayer
                         Main.maxRaining = 0f;
                     }
 
-                    RW_QuakeOffset = 1f + (float)(Main.time - CycleClearTimeEnd) / 
-                                          (float)(Main.dayLength - CycleClearTimeEnd);
-
                     if (PlayerManager.IsPlayerInQuakeArea)
                     {
-                        RW_QuakeIntensity = (float)Math.Sin(
-                                MathHelper.ToRadians((float)(Main.time - CycleClearTimeEnd) / 2f)
-                            ) * RW_QuakeOffset;
+                        var quakeTime = (float)(Main.time - CycleClearTimeEnd) / (float)(Main.dayLength - CycleClearTimeEnd);
+
+
+                        if (quakeTime > 0) // prevent offset going to -999 due undetected timer overflow
+                        {
+                            var offset = RW_QuakeIntensityMinValue * Math.Abs(MathF.Cos(2 * MathF.PI * quakeTime));
+                            RW_QuakeIntensity = offset;
+                        }
                     }
                     else // if player left certain biome, stop the quake
                     {
                         DecreaseQuakeIntensity();
                     }
 
+                    // stop rain effects
                     DecreaseRainOffset();
-
-                    // Cycle state swap
-                    if (Main.time < CycleClearTimeEnd && Main.IsItDay() ||
-                        Main.time >= CycleRainTimeEnd && !Main.IsItDay())
-                    {
-                        RW_CurrentCycle = CycleState.Clear;
-                    }
                     
-                    if(Main.time < CycleRainTimeEnd && !Main.IsItDay())
-                    {
-                        RW_CurrentCycle = CycleState.Rain;
-                    }
-
-                break;
+                    break;
 
                 case CycleState.Rain:
                     if (PlayerManager.IsRiftEclipse)
@@ -317,18 +336,21 @@ public class PlayerRainSystem : ModPlayer
                         break;
                     }
 
+                    TrySwapToClearCycle();
+                    TrySwapToQuakeCycle();
+
                     if (!Main.raining)
                     {
                         // force rain to start
                         Main.StartRain();
                     }
 
-                    var time = .05f * (float)Main.time;
+                    var rainTime = .05f * (float)Main.time;
 
-                    var sin  = MathF.Sin(time);
+                    var sin  = MathF.Sin(rainTime);
                     var sin2 = MathF.Pow(sin, 2);
 
-                    var cos  = MathF.Cos(time);
+                    var cos  = MathF.Cos(rainTime);
                     var cos2 = MathF.Pow(cos, 2);
 
                     Main.windSpeedCurrent = .1f * (sin2 * cos - cos2 * sin);
@@ -358,18 +380,6 @@ public class PlayerRainSystem : ModPlayer
                     if (Main.maxRaining != .97f)
                     {
                         Main.maxRaining = .97f;
-                    }
-
-                    // Cycle state swap
-                    if (Main.time >= CycleRainTimeEnd && !Main.IsItDay() || 
-                        Main.time < CycleClearTimeEnd && Main.IsItDay())
-                    {
-                        RW_CurrentCycle = CycleState.Clear;
-                    }
-
-                    if (Main.time >= CycleClearTimeEnd && Main.IsItDay())
-                    {
-                        RW_CurrentCycle = CycleState.Quake;
                     }
 
                 break;
