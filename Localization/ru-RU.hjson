@@ -119,28 +119,28 @@ Mods: {
 
 		Biomes: {
 			DimRainWorldBiome: {
+				// DisplayName: Shelter
+				// TownNPCDialogueName: The Shelter
+			}
+
+			RainWorldBiome: {
+				// DisplayName: Heavy Rain
+				// TownNPCDialogueName: The Heavy Rain
+			}
+
+			DimRainBiome: {
 				DisplayName: Укрытие
 				TownNPCDialogueName: Укрытие
 			}
 
-			RainWorldBiome: {
-				DisplayName: Ливень
-				TownNPCDialogueName: Ливень
-			}
-
-			DimRainBiome: {
-				// DisplayName: Dim Rain Biome
-				// TownNPCDialogueName: the Dim Rain Biome
-			}
-
 			QuakeBiome: {
-				// DisplayName: Quake Biome
-				// TownNPCDialogueName: the Quake Biome
+				DisplayName: Землетрясение
+				TownNPCDialogueName: Землетрясение
 			}
 
 			RainBiome: {
-				// DisplayName: Rain Biome
-				// TownNPCDialogueName: the Rain Biome
+				DisplayName: Ливень
+				TownNPCDialogueName: Ливень
 			}
 		}
 

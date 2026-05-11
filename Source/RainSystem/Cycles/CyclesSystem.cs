@@ -24,10 +24,6 @@ public class CyclesSystem
     /// </summary>
     private float RW_RainOffset { get; set; } = 0f;
     /// <summary>
-    /// Quake intensity offset value in RainWorld mode.
-    /// </summary>
-    private float RW_QuakeOffset { get; set; } = 0f;
-    /// <summary>
     /// Quake intensity value in RainWorld mode.
     /// </summary>
     private float RW_QuakeIntensity { get; set; } = 0f;
