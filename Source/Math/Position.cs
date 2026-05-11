@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace RainOverhaul.Source.Structs;
+namespace RainOverhaul.Source.Math;
 
 public struct Position
 {
-
     public int X;
     public int Y;
 

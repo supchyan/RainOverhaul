@@ -5,6 +5,7 @@ using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -38,6 +39,11 @@ public class PlayerManager : ModPlayer
         }
     }
     /// <summary>
+    /// True whenever player is in safe place
+    /// (i. e. cannot be affected by rain).
+    /// </summary>
+    public static bool IsPlayerInSafePlace { get; private set; }
+    /// <summary>
     /// True whenever player is in rain area.
     /// </summary>
     public static bool IsPlayerInRainArea 
@@ -52,6 +58,10 @@ public class PlayerManager : ModPlayer
         }
     }
     /// <summary>
+    /// True whenever player is under the rain.
+    /// </summary>
+    public static bool IsPlayerUnderRain => !IsPlayerInSafePlace && IsPlayerInRainArea;
+    /// <summary>
     /// True whenever player is in quake area.
     /// </summary>
     public static bool IsPlayerInQuakeArea
@@ -65,6 +75,10 @@ public class PlayerManager : ModPlayer
                     !IsRiftEclipse;
         }
     }
+    /// <summary>
+    /// True whenever player is mortal and exist in world.
+    /// </summary>
+    public static bool IsValidPlayer => !Main.LocalPlayer.dead && !Main.LocalPlayer.immune && Main.LocalPlayer.active;
     private SlotId DeathSoundSlot { get; set; }
     public override void OnEnterWorld()
     {
@@ -72,7 +86,27 @@ public class PlayerManager : ModPlayer
 
         if (ConfigServer.Instance.isRainWorldMode)
         {
-            SoundEngine.PlaySound(SoundStyles.EnterSound with { Volume = 2f });
+            SoundEngine.PlaySound(ROSoundStyle.EnterSound with { Volume = 2f });
+        }
+    }
+    public override void PostUpdate()
+    {
+        var wallTile = Main.tile[Main.LocalPlayer.Center.ToTileCoordinates()];
+        // Returns true if tile is a wall type
+        bool hasWallCollision = wallTile.WallType > WallID.None;
+
+        for (int y = Main.screenPosition.ToTileCoordinates().Y; y < Main.LocalPlayer.Top.ToTileCoordinates().Y; y++)
+        {
+            var solidTile = Main.tile[Main.LocalPlayer.Center.ToTileCoordinates().X, y];
+            var isSolidTile = solidTile.HasTile && Main.tileSolid[solidTile.TileType];
+
+            IsPlayerInSafePlace = isSolidTile || hasWallCollision;
+
+            // skip further loop since found a proper tile
+            if (IsPlayerInSafePlace)
+            {
+                break;
+            }
         }
     }
     public override bool PreKill(double damage, int hitDirection, bool pvp, 
@@ -96,7 +130,7 @@ public class PlayerManager : ModPlayer
         if (ConfigClient.Instance.deathSoundInAmbientMode || ConfigServer.Instance.isRainWorldMode)
         {
             DeathSoundSlot = SoundEngine.PlaySound(
-                SoundStyles.DeathSound with { 
+                ROSoundStyle.DeathSound with { 
                     Volume = 1.2f, 
                     MaxInstances = 3, 
                     SoundLimitBehavior = SoundLimitBehavior.ReplaceOldest

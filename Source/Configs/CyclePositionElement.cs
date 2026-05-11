@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RainOverhaul.Source.Audio;
-using RainOverhaul.Source.Helpers;
-using RainOverhaul.Source.Managers;
-using RainOverhaul.Source.Structs;
+using RainOverhaul.Source.Math;
 using RainOverhaul.Source.UI;
 using System;
 using Terraria;
@@ -155,10 +153,10 @@ public class CyclePositionElement : ConfigElement
             elementRectangle, new Color(22,22,22));
 
         // define drawable screen rectangle
-        Rect screen = new()
+        RectangleEx screen = new()
         {
-            Width  = (int)Math.Round(ScreenMaxValue * ScreenSize.X),
-            Height = (int)Math.Round(ScreenMaxValue * ScreenSize.Y),
+            Width  = (int)MathF.Round(ScreenMaxValue * ScreenSize.X),
+            Height = (int)MathF.Round(ScreenMaxValue * ScreenSize.Y),
         };
 
         // set screen TopLeft corner
@@ -168,7 +166,7 @@ public class CyclePositionElement : ConfigElement
         );
 
         // drawable screen rectangle
-        Rect visibleScreen = new()
+        RectangleEx visibleScreen = new()
         {
             Width  = screen.Width + (int)(IndicatorSize),
             Height = screen.Height + (int)(IndicatorSize),
@@ -242,8 +240,8 @@ public class CyclePositionElement : ConfigElement
 
         if (visibleScreen.IsMouseInside()) // draw coords when mouse over screen view
         {
-            var tooltipInfoX = (int)Math.Round(Main.screenWidth  * IndicatorVector.X);
-            var tooltipInfoY = (int)Math.Round(Main.screenHeight * IndicatorVector.Y);
+            var tooltipInfoX = (int)MathF.Round(Main.screenWidth  * IndicatorVector.X);
+            var tooltipInfoY = (int)MathF.Round(Main.screenHeight * IndicatorVector.Y);
 
             UIManager.DrawTooltip(this, spriteBatch, $"({tooltipInfoX}, {tooltipInfoY})");
 
@@ -256,7 +254,7 @@ public class CyclePositionElement : ConfigElement
 
         // Draw element localized label
         UIManager.DrawText(spriteBatch, Label,
-            new Vector2(dims.X, dims.Y).Adds(LabelPadding), Color.White, .3f);
+            new Vector2(dims.X + LabelPadding, dims.Y + LabelPadding), Color.White, .3f);
 
         var valueSavedTextSize = UIManager.GetTextSize(ValueUpdatedText, .3f);
 
@@ -315,7 +313,7 @@ public class CyclePositionElement : ConfigElement
                 valueSavedTextAlpha = 255;
 
                 // play some rainworld sound
-                SoundEngine.PlaySound(SoundStyles.DeathSound with { Volume = 3f });
+                SoundEngine.PlaySound(ROSoundStyle.DeathSound with { Volume = 3f });
             }
         }
     }

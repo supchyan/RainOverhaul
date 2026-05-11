@@ -12,8 +12,8 @@ public class ConfigClient : ModConfig
     public override ConfigScope Mode => ConfigScope.ClientSide;
 
     [Header("AmbientModeSettings")]
-    [DefaultValue(.1f)]
-    [Range(0f, .5f)]
+    [DefaultValue(.2f)]
+    [Range(0f, 1f)]
     public float rainIntensity; // ambient rain filter intensity (doesn't affect RW mode rain)
 
     [DefaultValue(.2f)]
@@ -26,7 +26,7 @@ public class ConfigClient : ModConfig
     [Header("RainWorldModeSettings")]
     [DefaultValue(1f)]
     [Range(0f, 2f)]
-    public float quakeImpulseInSafeArea; // RW mode quake intensity while in shelter
+    public float quakeIntensityInSafeArea; // RW mode quake intensity while in shelter
 
     [CustomModConfigItem(typeof(CyclePositionElement))]
     public Vector2 cycleIndicatorPosition;

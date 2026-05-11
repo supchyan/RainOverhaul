@@ -1,4 +1,4 @@
-﻿namespace RainOverhaul.Source.Enums;
+﻿namespace RainOverhaul.Source.RainSystem.Cycles;
 
 public enum CycleState
 {

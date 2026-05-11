@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
-namespace RainOverhaul.Source.Helpers;
+namespace RainOverhaul.Source.Math;
 
-public static class MathHelper
+public static class MathEx
 {
     /// <summary>
     /// Emulates Vector2.Lerp(), but for a `float` type.
@@ -12,6 +13,7 @@ public static class MathHelper
     /// <param name="weight">Lerp velocity.</param>
     public static float Lerp(float from, float to, float weight)
     {
-        return Vector2.Lerp(new Vector2(from, 0f), new Vector2(to, 0f), weight).X;
+        var value = Vector2.Lerp(new Vector2(from, 0f), new Vector2(to, 0f), weight).X;
+        return MathF.Round(value, 4);
     }
 }

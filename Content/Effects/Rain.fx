@@ -19,7 +19,7 @@ float4 Main(float4 sampleColor : COLOR0, float2 uv : TEXCOORD0) : COLOR0
         yOffset * uv.y + uTime * velocity
     ));
     
-    float2 _uv          = (uv.xy - .0425 * distort.xy * RainIntensity);
+    float2 _uv          = (uv.xy - .02125 * distort.xy * RainIntensity);
     float4 _color       = tex2D(uImage0, _uv);
     float4 _color_bnw   = tex2D(uImage0, _uv);
     

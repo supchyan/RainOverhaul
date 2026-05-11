@@ -39,11 +39,11 @@ Mods: {
 						'''
 				}
 
-				quakeImpulseInSafeArea: {
+				quakeIntensityInSafeArea: {
 					Label: Quake intensity in safe area
 					Tooltip:
 						'''
-						[c/dd8877:{$quakeImpulseInSafeArea.Label}]
+						[c/dd8877:{$quakeIntensityInSafeArea.Label}]
 						Affects safe area quake filter intensity during the rain in {$ConfigServer.isRainWorldMode.Label}.
 						'''
 				}
@@ -125,6 +125,21 @@ Mods: {
 			RainWorldBiome: {
 				DisplayName: Heavy Rain
 				TownNPCDialogueName: The Heavy Rain
+			}
+
+			DimRainBiome: {
+				DisplayName: Dim Rain Biome
+				TownNPCDialogueName: the Dim Rain Biome
+			}
+
+			QuakeBiome: {
+				DisplayName: Quake Biome
+				TownNPCDialogueName: the Quake Biome
+			}
+
+			RainBiome: {
+				DisplayName: Rain Biome
+				TownNPCDialogueName: the Rain Biome
 			}
 		}
 

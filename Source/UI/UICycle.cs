@@ -4,10 +4,9 @@ using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using RainOverhaul.Source.Systems;
 using RainOverhaul.Source.Configs;
-using RainOverhaul.Source.Enums;
+using RainOverhaul.Source.RainSystem.Cycles;
+using System;
 
 namespace RainOverhaul.Source.UI;
 
@@ -68,9 +67,9 @@ public class UICycle : UIState
 
 		Time++;
 
-		if(CycleStateCache != PlayerRainSystem.RW_CurrentCycle)
+		if(CycleStateCache != CyclesSystem.RW_CurrentCycle)
         {
-            CycleStateCache = PlayerRainSystem.RW_CurrentCycle;
+            CycleStateCache = CyclesSystem.RW_CurrentCycle;
             Time = 1;
 
 			SoundEngine.PlaySound(CycleSwapSound);
@@ -79,9 +78,9 @@ public class UICycle : UIState
 		float e = 2.71828f;
 		float IconScale = 0.7f + Time / 960f;
 
-		var IconOpacity = Color.White * (float)Math.Pow(1f / (Time / 40f), e);
+		var IconOpacity = Color.White * (float)MathF.Pow(1f / (Time / 40f), e);
 
-		switch (PlayerRainSystem.RW_CurrentCycle)
+		switch (CyclesSystem.RW_CurrentCycle)
         { 
 			case CycleState.Clear:
                 CycleClearImage.Color       = IconOpacity;

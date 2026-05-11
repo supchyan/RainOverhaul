@@ -5,9 +5,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RainOverhaul.Source.Systems;     
-public class NPCRainSystem : GlobalNPC {
-
+namespace RainOverhaul.Source.RainSystem;     
+public class NPCRainHandler : GlobalNPC
+{
     /// <summary>
     /// Damage control of the NPCs under the rain.
     /// </summary>
@@ -60,8 +60,5 @@ public class NPCRainSystem : GlobalNPC {
         {
             npc.AddBuff(ModContent.BuffType<RainSystemDebuff>(), 2);
         }
-    }
-    public override void UpdateLifeRegen(NPC npc, ref int damage) {
-        base.UpdateLifeRegen(npc, ref damage);
     }
 }

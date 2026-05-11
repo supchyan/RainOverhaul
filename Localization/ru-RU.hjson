@@ -39,11 +39,11 @@ Mods: {
 						'''
 				}
 
-				quakeImpulseInSafeArea: {
+				quakeIntensityInSafeArea: {
 					Label: Интенсивность тряски в укрытии
 					Tooltip:
 						'''
-						[c/dd8877:{$quakeImpulseInSafeArea.Label}]
+						[c/dd8877:{$quakeIntensityInSafeArea.Label}]
 						Влияет на интенсивность эффектов тряски в укрытии когда активен {$ConfigServer.isRainWorldMode.Label}.
 						'''
 				}
@@ -126,6 +126,21 @@ Mods: {
 			RainWorldBiome: {
 				DisplayName: Ливень
 				TownNPCDialogueName: Ливень
+			}
+
+			DimRainBiome: {
+				// DisplayName: Dim Rain Biome
+				// TownNPCDialogueName: the Dim Rain Biome
+			}
+
+			QuakeBiome: {
+				// DisplayName: Quake Biome
+				// TownNPCDialogueName: the Quake Biome
+			}
+
+			RainBiome: {
+				// DisplayName: Rain Biome
+				// TownNPCDialogueName: the Rain Biome
 			}
 		}
 

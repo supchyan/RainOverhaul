@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 
-namespace RainOverhaul.Source.Structs;
+namespace RainOverhaul.Source.Math;
 
-public struct Rect
+public struct RectangleEx
 {
     public int Width    { get; set; }
     public int Height   { get; set; }

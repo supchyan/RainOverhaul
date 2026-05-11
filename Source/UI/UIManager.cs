@@ -3,12 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.UI.Chat;
-using RainOverhaul.Source.Helpers;
-using RainOverhaul.Source.Configs;
 using Terraria.UI;
-using Terraria.ModLoader.Config;
 
-namespace RainOverhaul.Source.Managers;
+namespace RainOverhaul.Source.UI;
 
 internal class UIManager
 {
@@ -47,6 +44,6 @@ internal class UIManager
     {
         var tooltipPadding = 20f;
         DrawText(spriteBatch, text,
-            new Vector2(Main.mouseX, Main.mouseY).Adds(tooltipPadding), Color.White);
+            new Vector2(Main.mouseX + tooltipPadding, Main.mouseY + tooltipPadding), Color.White);
     }
 }

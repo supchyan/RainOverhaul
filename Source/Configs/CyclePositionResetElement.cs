@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RainOverhaul.Source.Managers;
+using RainOverhaul.Source.UI;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;

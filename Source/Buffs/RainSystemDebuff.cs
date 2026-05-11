@@ -1,6 +1,8 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using System;
 
 namespace RainOverhaul.Source.Buffs; 
 /// <summary>
@@ -25,10 +27,10 @@ public class RainSystemDebuff : ModBuff
         {
             player.mount.Dismount(player);
 
-            // applies every 2s
-            player.jump = 0;
-            player.jumpSpeedBoost = 0;
+            player.velocity += new Vector2(0, MathF.Abs(player.velocity.Y));
         }
+
+        player.lifeRegen -= 24000 / 120;
     }
     public override void Update(NPC npc, ref int buffIndex)
     {
