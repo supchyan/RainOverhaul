@@ -1,4 +1,4 @@
-using RainOverhaul.Source.Managers;
+using RainOverhaul.Source.Graphics;
 using Terraria.ModLoader;
 
 
@@ -7,8 +7,9 @@ public class RainOverhaul : Mod
 {
     public override void Load()
     {
-        FilterManager.RainFilter.Load();
-        FilterManager.AdditionalRainFilter.Load();
-        FilterManager.QuakeFilter.Load();
+        EffectsController.MenuRainEffect.Instance.Load();
+        EffectsController.RainEffect.Instance.Load();
+        EffectsController.AlternateRainEffect.Instance.Load();
+        EffectsController.QuakeEffect.Instance.Load();
     }
 }

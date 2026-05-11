@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using RainOverhaul.Source.Buffs;
 using RainOverhaul.Source.Configs;
 using RainOverhaul.Source.Enums;
+using RainOverhaul.Source.Graphics;
 using RainOverhaul.Source.Managers;
 using System;
 using Terraria;
@@ -18,15 +19,15 @@ public class PlayerRainSystem : ModPlayer
     /// <summary>
     /// Rain intensity used in vanilla rain system.
     /// </summary>
-    private float Intensity                     { get; set; } = 0f;
+    private float RainIntensity                     { get; set; } = 0f;
     /// <summary>
-    /// Transition property for vanilla rain mode shader.
+    /// Rain transition offset in Ambient mode.
     /// </summary>
-    private float VanillaTransition             { get; set; } = 0f;
+    private float RainOffset                    { get; set; } = 0f;
     /// <summary>
     /// Additional rain intensity used when player in Ocean or Jungle biomes.
     /// </summary>
-    private float ExtraIntensity                { get; set; } = 0f;
+    private float ExtraRainIntensity            { get; set; } = 0f;
     /// <summary>
     /// True whenever player ain't affected by RainWorld mode system.
     /// </summary>
@@ -48,108 +49,82 @@ public class PlayerRainSystem : ModPlayer
     /// </summary>
     public static CycleState RW_CurrentCycle    { get; private set; } = CycleState.Clear;
     /// <summary>
-    /// Rain intensity used in "rain world"'s rain system.
+    /// Rain intensity in Rain World mode.
     /// </summary>
-    private static float RW_Intensity       { get; set; } = 0f;
+    private static float RW_RainIntensity       { get; set; } = 0f;
     /// <summary>
-    /// Rain force value in RainWorld mode.
+    /// Rain transition offset in Rain World mode.
     /// </summary>
-    private float RW_RainForce              { get; set; } = 0f;
+    private float RW_RainOffset                 { get; set; } = 0f;
     /// <summary>
-    /// Quake strength value in RainWorld mode.
+    /// Quake intensity offset value in RainWorld mode.
     /// </summary>
-    private float RW_QuakeStrength          { get; set; } = 0f;
+    private float RW_QuakeOffset                { get; set; } = 0f;
     /// <summary>
-    /// Quake impulse value in RainWorld mode.
+    /// Quake intensity value in RainWorld mode.
     /// </summary>
-    private float RW_QuakeImpulse           { get; set; } = 0f;
+    private float RW_QuakeIntensity             { get; set; } = 0f;
     /// <summary>
-    /// Quake impulse max value in RainWorld mode.
+    /// Quake intensity max value in RainWorld mode.
     /// </summary>
-    private float RW_QuakeImpulseMaxValue   { get; } = 5.07f;
+    private float RW_QuakeIntensityMaxValue     { get; } = 5.07f;
     /// <summary>
-    /// Quake impulse min value in RainWorld mode.
+    /// Quake intensity min value in RainWorld mode.
     /// </summary>
-    private float RW_QuakeImpulseMinValue   { get; } = 4.07f;
+    private float RW_QuakeIntensityMinValue     { get; } = 4.07f;
 
     // In-game world time values used in RainWorld mode
     private int CycleClearTimeEnd   { get; } = 51700; // time when quake cycle starts 
     private int CycleQuakeTimeEnd   { get; } = 53999; // time when rain cycle starts 
     private int CycleRainTimeEnd    { get; } = 16200; // time when clear cycle starts
 
-    /// <summary>
-    /// In loop smoothly increases RainForce value until it's limit.
-    /// </summary>
-    private void IncreaseRainForce()
-    {
-        RW_RainForce = RW_RainForce < 1f ? RW_RainForce + .01f : 1f;
-    }
-    /// <summary>
-    /// In loop smoothly decreases RainForce value.
-    /// </summary>
-    private void DecreaseRainForce()
-    {
-        RW_RainForce = RW_RainForce > 0f ? RW_RainForce - .01f : 0f;
-    }
+    // Lerp offset for transitions between effects.
+    private float GeneralTransition { get; } = .04f;
 
     /// <summary>
-    /// In loop smoothly increases QuakeImpulse value until it's limit.
+    /// In loop smoothly increases RW_RainForce value until it's limit.
     /// </summary>
-    private void IncreaseQuakeImpulse()
+    private void IncreaseRainOffset()
     {
-        // increase quake effect
-        // += .1f and -= .1f important to fix glitchy transitions
-        // between cycle states
-        if (RW_QuakeImpulse < RW_QuakeImpulseMinValue)
-        {
-            RW_QuakeImpulse = RW_QuakeImpulseMinValue;
-        }
-        else if (RW_QuakeImpulse < RW_QuakeImpulseMaxValue)
-        {
-            RW_QuakeImpulse += .1f;
-        }
-        else
-        {
-            RW_QuakeImpulse -= .1f;
-        }
+        RW_RainOffset = MathHelper.Lerp(RW_RainOffset, 1f, GeneralTransition);
     }
     /// <summary>
-    /// In loop smoothly decreases QuakeImpulse value.
+    /// In loop smoothly decreases RW_RainOffset value.
     /// </summary>
-    private void DecreaseQuakeImpulse()
+    private void DecreaseRainOffset()
     {
-        if (RW_QuakeImpulse > 0f)
-        {
-            RW_QuakeImpulse -= .1f;
-        }
-        else
-        {
-            RW_QuakeImpulse = 0f;
-        }
+        RW_RainOffset = MathHelper.Lerp(RW_RainOffset, 0f, GeneralTransition);
     }
     /// <summary>
-    /// Lowers QuakeImpulse whenever needed.
+    /// In loop smoothly increases RW_QuakeIntensity value until it's limit.
     /// </summary>
-    private void SoftenQuakeImpulse()
+    private void IncreaseQuakeIntensity()
     {
-        if (RW_QuakeImpulse > ConfigClient.Instance.quakeImpulseInSafeArea)
-        {
-            RW_QuakeImpulse -= .1f;
-        }
-        else
-        {
-            RW_QuakeImpulse = ConfigClient.Instance.quakeImpulseInSafeArea;
-        }
+        RW_QuakeIntensity = MathHelper.Lerp(RW_QuakeIntensity, RW_QuakeIntensityMaxValue, GeneralTransition);
+    }
+    /// <summary>
+    /// In loop smoothly decreases RW_QuakeIntensity value.
+    /// </summary>
+    private void DecreaseQuakeIntensity()
+    {
+        RW_QuakeIntensity = MathHelper.Lerp(RW_QuakeIntensity, 0f, GeneralTransition);
+    }
+    /// <summary>
+    /// Lowers RW_QuakeIntensity whenever needed.
+    /// </summary>
+    private void SoftenQuakeIntensity()
+    {
+        RW_QuakeIntensity = MathHelper.Lerp(RW_QuakeIntensity, ConfigClient.Instance.quakeImpulseInSafeArea, GeneralTransition);
     }
 
     public override void OnEnterWorld()
     {
         base.OnEnterWorld();
 
-        // activate filters
-        FilterManager.RainFilter.Activate();
-        FilterManager.AdditionalRainFilter.Activate();
-        FilterManager.QuakeFilter.Activate();
+        // activate effects
+        EffectsController.RainEffect.Instance.Activate();
+        EffectsController.AlternateRainEffect.Instance.Activate();
+        EffectsController.QuakeEffect.Instance.Activate();
 
         if (Main.netMode == NetmodeID.Server && Main.maxRaining == 0)
         {
@@ -158,7 +133,6 @@ public class PlayerRainSystem : ModPlayer
         }
     }
 
-    // Rain logic
     public override void PostUpdate()
     {
         // Sync rain with server all time 
@@ -184,12 +158,12 @@ public class PlayerRainSystem : ModPlayer
 
         bool isPlayerUnderRain = !IsPlayerInSafePlace && PlayerManager.IsPlayerInRainArea;
 
-        ExtraIntensity = Main.LocalPlayer.ZoneBeach || Main.LocalPlayer.ZoneJungle ? 1.4f : 1f;
+        ExtraRainIntensity = Main.LocalPlayer.ZoneBeach || Main.LocalPlayer.ZoneJungle ? 1.4f : 1f;
 
         MaxRaining = MathHelper.Lerp(MaxRaining, Main.maxRaining, .01f);
 
-        Intensity       = 550f * MaxRaining / (20f * 645f) * ConfigClient.Instance.rainIntensity;
-        RW_Intensity    = 550f * MaxRaining / (20f * 645f) * 2.5f;
+        RainIntensity       = MaxRaining * ConfigClient.Instance.rainIntensity;
+        RW_RainIntensity    = MaxRaining * 2.5f;
 
         if(!ConfigServer.Instance.isRainWorldMode)
         {
@@ -198,31 +172,34 @@ public class PlayerRainSystem : ModPlayer
             
             if(isPlayerUnderRain) 
             {
-                VanillaTransition = VanillaTransition < 1f ? VanillaTransition + .005f : 1f;
+                RainOffset = RainOffset < 1f ? RainOffset + .005f : 1f;
             } 
             else
             {
-                VanillaTransition = VanillaTransition > 0f ? VanillaTransition - .005f : 0f;
+                RainOffset = RainOffset > 0f ? RainOffset - .005f : 0f;
             }
 
             // ambient mode intensities
-            var rainIntensity = Intensity * VanillaTransition * ExtraIntensity;
-            var blueIntensity = VanillaTransition * ConfigClient.Instance.blueFilterIntensity;
+            var rainIntensity = RainOffset * RainIntensity * ExtraRainIntensity;
+            var blueIntensity = RainOffset * ConfigClient.Instance.blueFilterIntensity;
 
-            // About AdditionalRainFilter and RainFilter:
-            // AdditionalRainFilter is more like effets background,
-            // while RainFilter is the rain effect on foreground.
+            // About AlternateRainEffect and RainEffect:
+            // AlternateRainEffect is more like effets background,
+            // while RainEffect is the rain effect on foreground.
             // Applying one to another causes the good looking rain effect!
 
-            // update additional rain filter
-            FilterManager.AdditionalRainFilter.Update(
-                .2f * rainIntensity, 0f, -.4f * MathF.Sin(.05f * (float)Main.time));
+            // update alternate rain effect
+            EffectsController.AlternateRainEffect.Instance.SetParameter("RainIntensity", .5f * rainIntensity);
+            EffectsController.AlternateRainEffect.Instance.SetParameter("RainDirection", .4f * MathF.Sin(.05f * (float)Main.time));
 
-            // update rain filter
-            FilterManager.RainFilter.Update(rainIntensity, blueIntensity, -4f * Main.windSpeedCurrent);
+            // update rain effects
+            EffectsController.RainEffect.Instance.SetParameter("RainIntensity", rainIntensity);
+            EffectsController.RainEffect.Instance.SetParameter("BlueIntensity", blueIntensity);
+            EffectsController.RainEffect.Instance.SetParameter("MonochromeIntensity", 0f);
+            EffectsController.RainEffect.Instance.SetParameter("RainDirection", -4f * Main.windSpeedCurrent);
 
             // disable quake effects
-            FilterManager.QuakeFilter.Update(0f, 0f);
+            EffectsController.QuakeEffect.Instance.SetParameter("QuakeIntensity", 0f);
         } 
         else // when rain mode enabled:
         {
@@ -233,7 +210,7 @@ public class PlayerRainSystem : ModPlayer
 
             if(isPlayerUnderRain && !Main.LocalPlayer.dead && !Main.LocalPlayer.immune && Main.LocalPlayer.active)
             {
-                int fValue = (int)Math.Round(RW_Intensity * 20f);
+                int fValue = (int)Math.Round(RW_RainIntensity * 20f);
 
                 if(fValue > 0)
                 {
@@ -241,21 +218,27 @@ public class PlayerRainSystem : ModPlayer
                 }
             }
 
-            // update additional rain filter
-            FilterManager.AdditionalRainFilter.Update(.1f * RW_RainForce, 0f, 4f * Main.windSpeedCurrent);
+            var rw_rainIntensity = RW_RainOffset * RW_RainIntensity;
+            var rw_monochromeIntensity = RW_RainOffset;
 
-            // update rain filter
-            FilterManager.RainFilter.Update(.1f * RW_RainForce, RW_RainForce, -4f * Main.windSpeedCurrent);
+            // update alternate rain effect
+            EffectsController.AlternateRainEffect.Instance.SetParameter("RainIntensity", rw_rainIntensity);
+            EffectsController.AlternateRainEffect.Instance.SetParameter("RainDirection", 2f * Main.windSpeedCurrent);
 
-            // update quake filter
-            FilterManager.QuakeFilter.Update(RW_QuakeImpulse, 3.7f);
+            // update rain effects
+            EffectsController.RainEffect.Instance.SetParameter("RainIntensity", rw_rainIntensity);
+            EffectsController.RainEffect.Instance.SetParameter("MonochromeIntensity", rw_monochromeIntensity);
+            EffectsController.RainEffect.Instance.SetParameter("RainDirection", -2f * Main.windSpeedCurrent);
+
+            // disable quake effects
+            EffectsController.QuakeEffect.Instance.SetParameter("QuakeIntensity", RW_QuakeIntensity);
 
             // Custom rain behavior when in "RainWorld" mode
-            switch(RW_CurrentCycle)
+            switch (RW_CurrentCycle)
             {
                 case CycleState.Clear:
-                    DecreaseQuakeImpulse();
-                    DecreaseRainForce();
+                    DecreaseQuakeIntensity();
+                    DecreaseRainOffset();
 
                     // disable vanilla rain dust
                     if (Main.maxRaining != 0f)
@@ -297,21 +280,21 @@ public class PlayerRainSystem : ModPlayer
                         Main.maxRaining = 0f;
                     }
 
-                    RW_QuakeStrength = 1f + (float)(Main.time - CycleClearTimeEnd) / 
-                                            (float)(Main.dayLength - CycleClearTimeEnd);
+                    RW_QuakeOffset = 1f + (float)(Main.time - CycleClearTimeEnd) / 
+                                          (float)(Main.dayLength - CycleClearTimeEnd);
 
                     if (PlayerManager.IsPlayerInQuakeArea)
                     {
-                        RW_QuakeImpulse = (float)Math.Sin(
+                        RW_QuakeIntensity = (float)Math.Sin(
                                 MathHelper.ToRadians((float)(Main.time - CycleClearTimeEnd) / 2f)
-                            ) * RW_QuakeStrength;
+                            ) * RW_QuakeOffset;
                     }
                     else // if player left certain biome, stop the quake
                     {
-                        DecreaseQuakeImpulse();
+                        DecreaseQuakeIntensity();
                     }
 
-                    DecreaseRainForce();
+                    DecreaseRainOffset();
 
                     // Cycle state swap
                     if (Main.time < CycleClearTimeEnd && Main.IsItDay() ||
@@ -340,26 +323,34 @@ public class PlayerRainSystem : ModPlayer
                         Main.StartRain();
                     }
 
-                    Main.windSpeedCurrent = .1f * MathF.Sin(.05f * (float)Main.time);
+                    var time = .05f * (float)Main.time;
+
+                    var sin  = MathF.Sin(time);
+                    var sin2 = MathF.Pow(sin, 2);
+
+                    var cos  = MathF.Cos(time);
+                    var cos2 = MathF.Pow(cos, 2);
+
+                    Main.windSpeedCurrent = .1f * (sin2 * cos - cos2 * sin);
 
                     // if player in rain zone
                     if (PlayerManager.IsPlayerInRainArea)
                     {
                         if (!IsPlayerInSafePlace)
                         {
-                            IncreaseRainForce();
-                            IncreaseQuakeImpulse();
+                            IncreaseRainOffset();
+                            IncreaseQuakeIntensity();
                         }
                         else
                         {
-                            DecreaseRainForce();
-                            SoftenQuakeImpulse();
+                            DecreaseRainOffset();
+                            SoftenQuakeIntensity();
                         }
                     }
                     else // !isPlayerInRainArea
                     {
-                        DecreaseQuakeImpulse();
-                        DecreaseRainForce();
+                        DecreaseQuakeIntensity();
+                        DecreaseRainOffset();
                     }
 
                     // force limit rain value

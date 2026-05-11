@@ -16,7 +16,7 @@ public class ConfigClient : ModConfig
     [Range(0f, .5f)]
     public float rainIntensity; // ambient rain filter intensity (doesn't affect RW mode rain)
 
-    [DefaultValue(.6f)]
+    [DefaultValue(.2f)]
     [Range(0f, 1f)]
     public float blueFilterIntensity; // ambient blue filter intensity (doesn't affect RW mode rain)
 
