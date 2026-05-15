@@ -7,6 +7,9 @@ namespace RainOverhaul.Source.Audio;
 /// </summary>
 internal class ROSoundStyle
 {
-    public static SoundStyle EnterSound { get; } = new("RainOverhaul/Content/Sounds/sEnter");
-    public static SoundStyle DeathSound { get; } = new("RainOverhaul/Content/Sounds/sDeath");
+    public static SoundStyle Impact { get; } = new("RainOverhaul/Content/Sounds/impact");
+    public static SoundStyle Death { get; } = new("RainOverhaul/Content/Sounds/death");
+    public static SoundStyle Swap { get; } = new("RainOverhaul/Content/Sounds/swap");
+    public static SoundStyle RainAmbience { get; } = new("RainOverhaul/Content/Sounds/rainAmbience");
+    public static SoundStyle DimRainAmbience { get; } = new("RainOverhaul/Content/Sounds/dimRainAmbience");
 }

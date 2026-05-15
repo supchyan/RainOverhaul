@@ -3,6 +3,5 @@
 public enum CycleState
 {
     Clear,
-    Quake,
     Rain
 }

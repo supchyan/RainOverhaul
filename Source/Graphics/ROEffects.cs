@@ -1,13 +1,13 @@
 ﻿namespace RainOverhaul.Source.Graphics;
 
-public class EffectsController
+public class ROEffects
 {
     public class RainEffect : GenericEffect
     {
         public static RainEffect Instance { get; } = new();
         public override void Load()
         {
-            Initialize("Rain", "JustRainScene");
+            Initialize("Rain", "RainScene");
             base.Load();
             SetImage(NOISE);
         }
@@ -17,18 +17,9 @@ public class EffectsController
         public static AlternateRainEffect Instance { get; } = new();
         public override void Load()
         {
-            Initialize("Rain", "JustSecondRainScene");
+            Initialize("Rain", "AltRainScene");
             base.Load();
             SetImage(PERLIN);
-        }
-    }
-    public class MenuRainEffect : GenericEffect
-    {
-        public static MenuRainEffect Instance { get; } = new();
-        public override void Load()
-        {
-            Initialize("Rain", "MenuRainScene");
-            base.Load();
         }
     }
     public class QuakeEffect : GenericEffect

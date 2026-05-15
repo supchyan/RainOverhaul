@@ -6,14 +6,16 @@ using Terraria.ModLoader;
 
 namespace RainOverhaul.Source.Biomes; 
 
-public class RainBiome : ModBiome
+public class DullScene : ModSceneEffect
 {
     public override SceneEffectPriority Priority => SceneEffectPriority.Environment;
-    public override int Music => MusicLoader.GetMusicSlot(Mod, "Content/Sounds/sRain");
+    public override int Music => MusicLoader.GetMusicSlot(Mod, "");
 
-    public override bool IsBiomeActive(Player player)
+    public override bool IsSceneEffectActive(Player player)
     {
         return CyclesSystem.RW_CurrentCycle == CycleState.Rain && 
-            PlayerManager.IsPlayerInRainArea && !PlayerManager.IsPlayerInSafePlace && ConfigServer.Instance.isRainWorldMode;
+            PlayerManager.IsPlayerInRainArea && 
+            ConfigServer.Instance.isRainWorldMode &&
+            ConfigClient.Instance.disableBiomesMusicDuringRain;
     }
 }

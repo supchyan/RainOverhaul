@@ -30,7 +30,7 @@ Mods: {
 				}
 
 				deathSoundInAmbientMode: {
-					Label: Rain World Death Sound
+					Label: Rain World death sound
 					Tooltip:
 						'''
 						[c/ddbb77:{$deathSoundInAmbientMode.Label}]
@@ -44,7 +44,16 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$quakeIntensityInSafeArea.Label}]
-						Affects safe area quake filter intensity during the rain in {$ConfigServer.isRainWorldMode.Label}.
+						Affects safe area quake filter intensity during the rain in {$ConfigClient.Headers.RainWorldModeSettings}.
+						'''
+				}
+
+				disableBiomesMusicDuringRain: {
+					Label: Disable biome's music during downpour
+					Tooltip:
+						'''
+						[c/dd8877:{$disableBiomesMusicDuringRain.Label}]
+						Disables music playing in biomes during downpours in {$ConfigClient.Headers.RainWorldModeSettings}.
 						'''
 				}
 
@@ -53,7 +62,7 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$cycleIndicatorPosition.Label}]
-						Affects position of cycles indicator in {$ConfigServer.isRainWorldMode.Label}.
+						Affects position of cycles indicator in {$ConfigClient.Headers.RainWorldModeSettings}.
 						[c/aaaaaa:This option saves automatically after being changed.]
 						'''
 					ValueUpdatedText: Value updated
@@ -71,15 +80,16 @@ Mods: {
 				Headers: {
 					RainWorldModeSettings: Rain World Mode
 					MiscSettings: Other
+					DebugMenu: Debug Menu
 				}
 
 				isRainWorldMode: {
-					Label: "[c/8899bb:Rain] [c/7788aa:Wo][c/8899bb:rld] [c/7788aa:Mode]"
+					Label: "[c/8899bb:Rain] [c/7788aa:Wo][c/8899bb:rld] [c/7788aa:mode]"
 					Tooltip:
 						'''
 						{$isRainWorldMode.Label}
-						Replaces {$ConfigClient.Headers.AmbientModeSettings} and adds cycles system from the Rain World game. Aware of heavy rain!
-						[c/aaaaaa:This option heavily affects in-game experience.]
+						Replaces {$ConfigClient.Headers.AmbientModeSettings} and adds cycles system from the Rain World game. Beware of downpours!
+						[c/aaaaaa:This option affects in-game experience.]
 						'''
 				}
 
@@ -88,7 +98,7 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$rainWorldAffectsTownNPSs.Label}]
-						Set it to true if you want to squash careless town NPCs during the rain in {$isRainWorldMode.Label}.
+						Set it to true if you want to squash careless town NPCs during the rain in {$ConfigClient.Headers.RainWorldModeSettings}.
 						'''
 				}
 
@@ -97,13 +107,13 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$rainWorldAffectsOtherNPCs.Label}]
-						Set it to true if you want to squash careless NPCs during the rain in {$isRainWorldMode.Label}.
+						Set it to true if you want to squash careless NPCs during the rain in {$ConfigClient.Headers.RainWorldModeSettings}.
 						[c/aaaaaa:This option doesn't affect town NPCs.]
 						'''
 				}
 
 				isNoxusBossSupport: {
-					Label: Wrath of the Gods Compitability
+					Label: Wrath of the Gods compitability
 					Tooltip:
 						'''
 						[c/ff6688:{$isNoxusBossSupport.Label}]
@@ -111,37 +121,21 @@ Mods: {
 						[c/aaaaaa:Originally, Rift Eclipse replaces rain with a snow.]
 						'''
 				}
+
+				isRainWorldModeHasInfiniteRainCycle: {
+					Label: Infinite rain
+					Tooltip:
+						'''
+						[c/8899bb:{$isRainWorldModeHasInfiniteRainCycle.Label}]
+						Enables infinite rain cycle in {$ConfigClient.Headers.RainWorldModeSettings}.
+						[c/aaaaaa:It's not recommended to enable this outside of the shelter...]
+						'''
+				}
 			}
 		}
 
-		RainDeathReason: has drown under the rain.
-
-		Biomes: {
-			DimRainWorldBiome: {
-				DisplayName: Shelter
-				TownNPCDialogueName: The Shelter
-			}
-
-			RainWorldBiome: {
-				DisplayName: Heavy Rain
-				TownNPCDialogueName: The Heavy Rain
-			}
-
-			DimRainBiome: {
-				DisplayName: Dim Rain Biome
-				TownNPCDialogueName: the Dim Rain Biome
-			}
-
-			QuakeBiome: {
-				DisplayName: Quake Biome
-				TownNPCDialogueName: the Quake Biome
-			}
-
-			RainBiome: {
-				DisplayName: Rain Biome
-				TownNPCDialogueName: the Rain Biome
-			}
-		}
+		RainDeathReason: "{0} has drown under the rain."
+		NegativeRainTimeException: "[c/8899bb:Whoooa! Rain Overhaul's timers became negative. Notify devs, please!!!]"
 
 		Buffs: {
 			RainSystemDebuff: {

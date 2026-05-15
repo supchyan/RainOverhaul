@@ -33,7 +33,6 @@ public class NPCRainHandler : GlobalNPC
         for (int y = Main.screenPosition.ToTileCoordinates().Y; y < npc.Top.ToTileCoordinates().Y; y++)
         {
             var solidTile = Main.tile[npc.Center.ToTileCoordinates().X, y];
-
             var isSolidTile = solidTile.HasTile && Main.tileSolid[solidTile.TileType];
 
             var safeGeneral     = isSolidTile || hasWallCollision;

@@ -12,6 +12,7 @@ public class ConfigClient : ModConfig
     public override ConfigScope Mode => ConfigScope.ClientSide;
 
     [Header("AmbientModeSettings")]
+
     [DefaultValue(.2f)]
     [Range(0f, 1f)]
     public float rainIntensity; // ambient rain filter intensity (doesn't affect RW mode rain)
@@ -24,6 +25,10 @@ public class ConfigClient : ModConfig
     public bool deathSoundInAmbientMode; // whenever rain world death sound is enabled in ambient mode
 
     [Header("RainWorldModeSettings")]
+
+    [DefaultValue(true)]
+    public bool disableBiomesMusicDuringRain; // RW mode disables music in biomes during downpours.
+
     [DefaultValue(1f)]
     [Range(0f, 2f)]
     public float quakeIntensityInSafeArea; // RW mode quake intensity while in shelter

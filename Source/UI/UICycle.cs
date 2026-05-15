@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using RainOverhaul.Source.Configs;
 using RainOverhaul.Source.RainSystem.Cycles;
 using System;
+using RainOverhaul.Source.Audio;
 
 namespace RainOverhaul.Source.UI;
 
@@ -15,7 +16,6 @@ public class UICycle : UIState
     private UIElement Container		{ get; set; } = new UIElement();
 
     private UIImage CycleClearImage { get; set; } = new UIImage(UIAssets.CycleClearAsset);
-    private UIImage CycleQuakeImage { get; set; } = new UIImage(UIAssets.CycleQuakeAsset);
     private UIImage CycleRainImage	{ get; set; } = new UIImage(UIAssets.CycleRainAsset);
 
     /// <summary>
@@ -26,19 +26,13 @@ public class UICycle : UIState
     /// CycleState cache used to control animation timers.
     /// </summary>
 	private CycleState CycleStateCache { get; set; } = CycleState.Clear;
-    /// <summary>
-    /// Sound playied when RainWorld mode cycle changes.
-    /// </summary>
-	public SoundStyle CycleSwapSound { get; set; } = new("RainOverhaul/Content/Sounds/sCycleSwap");
 
     public override void OnInitialize()
     {
         CycleClearImage.Color	= Color.Transparent;
-        CycleQuakeImage.Color	= Color.Transparent;
         CycleRainImage.Color	= Color.Transparent;
 
         Container.Append(CycleClearImage);
-        Container.Append(CycleQuakeImage);
         Container.Append(CycleRainImage);
 
         Append(Container);
@@ -62,7 +56,6 @@ public class UICycle : UIState
         }
 
         SetIconRect(CycleClearImage, xPos, yPos, IconWidth, IconHeight);
-        SetIconRect(CycleQuakeImage, xPos, yPos, IconWidth, IconHeight);
         SetIconRect(CycleRainImage,  xPos, yPos, IconWidth, IconHeight);
 
 		Time++;
@@ -72,7 +65,7 @@ public class UICycle : UIState
             CycleStateCache = CyclesSystem.RW_CurrentCycle;
             Time = 1;
 
-			SoundEngine.PlaySound(CycleSwapSound);
+			SoundEngine.PlaySound(ROSoundStyle.Swap);
 		}
 
 		float e = 2.71828f;
@@ -86,15 +79,6 @@ public class UICycle : UIState
                 CycleClearImage.Color       = IconOpacity;
                 CycleClearImage.ImageScale  = IconScale;
 
-                CycleQuakeImage.Color   = Color.Transparent;
-                CycleRainImage.Color    = Color.Transparent;
-            break;
-
-			case CycleState.Quake:
-                CycleQuakeImage.Color       = IconOpacity;
-                CycleQuakeImage.ImageScale  = IconScale;
-
-				CycleClearImage.Color   = Color.Transparent;
                 CycleRainImage.Color    = Color.Transparent;
             break;
 
@@ -103,7 +87,6 @@ public class UICycle : UIState
                 CycleRainImage.ImageScale   = IconScale;
 
                 CycleClearImage.Color = Color.Transparent;
-                CycleQuakeImage.Color = Color.Transparent;
             break;
 		}
     }

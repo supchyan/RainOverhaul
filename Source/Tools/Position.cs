@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RainOverhaul.Source.Math;
+﻿namespace RainOverhaul.Source.Tools;
 
 public struct Position
 {

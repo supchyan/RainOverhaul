@@ -1,7 +1,6 @@
 using RainOverhaul.Source.Audio;
 using RainOverhaul.Source.Buffs;
 using RainOverhaul.Source.Configs;
-using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -79,14 +78,14 @@ public class PlayerManager : ModPlayer
     /// True whenever player is mortal and exist in world.
     /// </summary>
     public static bool IsValidPlayer => !Main.LocalPlayer.dead && !Main.LocalPlayer.immune && Main.LocalPlayer.active;
-    private SlotId DeathSoundSlot { get; set; }
+
     public override void OnEnterWorld()
     {
         base.OnEnterWorld();
 
         if (ConfigServer.Instance.isRainWorldMode)
         {
-            SoundEngine.PlaySound(ROSoundStyle.EnterSound with { Volume = 2f });
+            SoundEngine.PlaySound(ROSoundStyle.Impact with { Volume = 2f });
         }
     }
     public override void PostUpdate()
@@ -114,7 +113,10 @@ public class PlayerManager : ModPlayer
     {
         if(Player.HasBuff<RainSystemDebuff>())
         {
-            damageSource = PlayerDeathReason.ByCustomReason($"{Player.name} {Language.GetTextValue("Mods.RainOverhaul.RainDeathReason")}");
+            damageSource = PlayerDeathReason.ByCustomReason(
+                Language.GetText("Mods.RainOverhaul.RainDeathReason")
+                .ToNetworkText(Player.name)
+                );
         }
 
         // prevent vanilla sound from being playied
@@ -129,8 +131,8 @@ public class PlayerManager : ModPlayer
         // play rain world death sound if enabled in config or player is in RW mode
         if (ConfigClient.Instance.deathSoundInAmbientMode || ConfigServer.Instance.isRainWorldMode)
         {
-            DeathSoundSlot = SoundEngine.PlaySound(
-                ROSoundStyle.DeathSound with { 
+            SoundEngine.PlaySound(
+                ROSoundStyle.Death with { 
                     Volume = 1.2f, 
                     MaxInstances = 3, 
                     SoundLimitBehavior = SoundLimitBehavior.ReplaceOldest

@@ -44,7 +44,16 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$quakeIntensityInSafeArea.Label}]
-						Влияет на интенсивность эффектов тряски в укрытии когда активен {$ConfigServer.isRainWorldMode.Label}.
+						Влияет на интенсивность эффектов тряски в укрытии когда активен {$ConfigClient.Headers.RainWorldModeSettings}.
+						'''
+				}
+
+				disableBiomesMusicDuringRain: {
+					Label: Выключать музыку биомов во время ливня
+					Tooltip:
+						'''
+						[c/dd8877:{$disableBiomesMusicDuringRain.Label}]
+						Выключает музыку в биомах во время ливней когда активен {$ConfigClient.Headers.RainWorldModeSettings}.
 						'''
 				}
 
@@ -54,7 +63,7 @@ Mods: {
 						'''
 						[c/dd8877:{$cycleIndicatorPosition.Label}]
 						Влияет на положение индикатора циклов
-						когда активен {$ConfigServer.isRainWorldMode.Label}.
+						когда активен {$ConfigClient.Headers.RainWorldModeSettings}.
 						[c/aaaaaa:Эта опция сохраняется автоматически после изменения.]
 						'''
 					ValueUpdatedText: Изменения сохранены
@@ -72,6 +81,7 @@ Mods: {
 				Headers: {
 					RainWorldModeSettings: Режим Rain World
 					MiscSettings: Другое
+					DebugMenu: Меню разработчика
 				}
 
 				isRainWorldMode: {
@@ -79,8 +89,8 @@ Mods: {
 					Tooltip:
 						'''
 						{$isRainWorldMode.Label}
-						Заменяет собой {$ConfigClient.Headers.AmbientModeSettings}, добавляя систему циклов из Rain World. Избегайте внезапных дождей!
-						[c/aaaaaa:Эта опция сильно меняет игровой опыт.]
+						Заменяет собой {$ConfigClient.Headers.AmbientModeSettings}, добавляя систему циклов из Rain World. Избегайте ливней!
+						[c/aaaaaa:Эта опция меняет игровой опыт.]
 						'''
 				}
 
@@ -89,7 +99,7 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$rainWorldAffectsTownNPSs.Label}]
-						Включите, если хотите давить невнимательных городских НИПов ливнем когда активен {$isRainWorldMode.Label}.
+						Включите, если хотите давить невнимательных городских НИПов ливнем когда активен {$ConfigClient.Headers.RainWorldModeSettings}.
 						'''
 				}
 
@@ -98,7 +108,7 @@ Mods: {
 					Tooltip:
 						'''
 						[c/dd8877:{$rainWorldAffectsOtherNPCs.Label}]
-						Включите, если хотите давить невнимательных НИПов ливнем когда активен {$isRainWorldMode.Label}.
+						Включите, если хотите давить невнимательных НИПов ливнем когда активен {$ConfigClient.Headers.RainWorldModeSettings}.
 						[c/aaaaaa:Эта опция не влияет на городских НИПов.]
 						'''
 				}
@@ -112,37 +122,21 @@ Mods: {
 						[c/aaaaaa:Инзначально, Rift Eclipse заменяет весь дождь на снег.]
 						'''
 				}
+
+				isRainWorldModeHasInfiniteRainCycle: {
+					Label: Бесконечный ливень
+					Tooltip:
+						'''
+						[c/8899bb:{$isRainWorldModeHasInfiniteRainCycle.Label}]
+						Включает бесконечный ливень когда активен {$ConfigClient.Headers.RainWorldModeSettings}.
+						[c/aaaaaa:Не рекомендуется включать за пределами укрытия...]
+						'''
+				}
 			}
 		}
 
-		RainDeathReason: погиб(-ла) под дождём.
-
-		Biomes: {
-			DimRainWorldBiome: {
-				// DisplayName: Shelter
-				// TownNPCDialogueName: The Shelter
-			}
-
-			RainWorldBiome: {
-				// DisplayName: Heavy Rain
-				// TownNPCDialogueName: The Heavy Rain
-			}
-
-			DimRainBiome: {
-				DisplayName: Укрытие
-				TownNPCDialogueName: Укрытие
-			}
-
-			QuakeBiome: {
-				DisplayName: Землетрясение
-				TownNPCDialogueName: Землетрясение
-			}
-
-			RainBiome: {
-				DisplayName: Ливень
-				TownNPCDialogueName: Ливень
-			}
-		}
+		RainDeathReason: "{0} погиб(-ла) под дождём."
+		NegativeRainTimeException: "[c/8899bb:ОГОо! Таймеры Rain Overhaul'а перешли черту. Пожалуйста, сообщите разработчикам!!!]"
 
 		Buffs: {
 			RainSystemDebuff: {

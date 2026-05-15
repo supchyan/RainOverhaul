@@ -11,15 +11,20 @@ public class ConfigServer : ModConfig
 
     [Header("RainWorldModeSettings")]
     [DefaultValue(false)]
-    public bool isRainWorldMode; // whenever RW mode is enabled (cycle system, rain damage and etc.)
+    public bool isRainWorldMode; // RW mode toggle (cycle system, rain damage and etc.)
 
     [DefaultValue(true)]
-    public bool rainWorldAffectsTownNPSs; // whenever RW mode rain damages town npcs
+    public bool rainWorldAffectsTownNPSs; // if RW mode rain can damage town npcs
 
     [DefaultValue(true)]
-    public bool rainWorldAffectsOtherNPCs; // whenever RW mode rain damages npcs beyond town flag.
+    public bool rainWorldAffectsOtherNPCs; // if RW mode rain can damage npcs beyond town flag.
 
     [Header("MiscSettings")]
     [DefaultValue(true)]
-    public bool isNoxusBossSupport; // whenever this mod supports WOTG
+    public bool isNoxusBossSupport; // WOTG support toggle
+
+    [Header("DebugMenu")]
+    [DefaultValue(false)]
+    public bool isRainWorldModeHasInfiniteRainCycle; // if RW mode has an infinite rain cycle.
+
 }

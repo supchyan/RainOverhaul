@@ -6,7 +6,7 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ROMath = RainOverhaul.Source.Math;
+using RainOverhaul.Source.Tools;
 
 namespace RainOverhaul.Source.RainSystem; 
 public class RainSystem : ModPlayer
@@ -27,10 +27,6 @@ public class RainSystem : ModPlayer
     /// Additional rain intensity used when player in Ocean or Jungle biomes.
     /// </summary>
     private float ExtraRainIntensity            { get; set; } = 0f;
-    /// <summary>
-    /// True whenever player ain't affected by RainWorld mode system.
-    /// </summary>
-    private bool IsPlayerInSafePlace            { get; set; } = false;
 
     /// <summary>
     /// Rain world mode system instnace.
@@ -44,9 +40,9 @@ public class RainSystem : ModPlayer
 
         ExtraRainIntensity = Main.LocalPlayer.ZoneBeach || Main.LocalPlayer.ZoneJungle ? 1.4f : 1f;
 
-        MaxRaining = ROMath.MathEx.Lerp(MaxRaining, Main.maxRaining, .01f);
+        MaxRaining = MathTools.Lerp(MaxRaining, Main.maxRaining, .01f);
 
-        RainIntensity       = MaxRaining * ConfigClient.Instance.rainIntensity;
+        RainIntensity= MaxRaining * ConfigClient.Instance.rainIntensity;
 
         if(!ConfigServer.Instance.isRainWorldMode)
         {
@@ -69,19 +65,19 @@ public class RainSystem : ModPlayer
             // Applying one to another causes the good looking rain effect!
 
             // update alternate rain effect
-            EffectsController.AlternateRainEffect.Instance.SetParameter("RainIntensity", .5f * rainIntensity);
-            EffectsController.AlternateRainEffect.Instance.SetParameter("RainDirection", .4f * MathF.Sin(.05f * (float)Main.time));
+            ROEffects.AlternateRainEffect.Instance.SetParameter("RainIntensity", .5f * rainIntensity);
+            ROEffects.AlternateRainEffect.Instance.SetParameter("RainDirection", .4f * MathF.Sin(.05f * (float)Main.time));
 
             // update rain effects
-            EffectsController.RainEffect.Instance.SetParameter("RainIntensity", rainIntensity);
-            EffectsController.RainEffect.Instance.SetParameter("BlueIntensity", blueIntensity);
-            EffectsController.RainEffect.Instance.SetParameter("MonochromeIntensity", 0f);
-            EffectsController.RainEffect.Instance.SetParameter("RainDirection", -4f * Main.windSpeedCurrent);
+            ROEffects.RainEffect.Instance.SetParameter("RainIntensity", rainIntensity);
+            ROEffects.RainEffect.Instance.SetParameter("BlueIntensity", blueIntensity);
+            ROEffects.RainEffect.Instance.SetParameter("MonochromeIntensity", 0f);
+            ROEffects.RainEffect.Instance.SetParameter("RainDirection", -4f * Main.windSpeedCurrent);
 
             // disable quake effects
-            EffectsController.QuakeEffect.Instance.SetParameter("QuakeIntensity", 0f);
+            ROEffects.QuakeEffect.Instance.SetParameter("QuakeIntensity", 0f);
 
-            cyclesSystem.Reset();
+            cyclesSystem.ForceClear();
         } 
         else // Rain World Mode is enabled vvv
         {

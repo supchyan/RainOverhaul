@@ -14,7 +14,7 @@ float4 Main(float4 sampleColor : COLOR0, float2 uv : TEXCOORD0) : COLOR0
     float4 _color = tex2D(uImage0, uv);
     return _color;
 }
-technique ShakeTechnique
+technique QuakeTechnique
 {
     pass Quake
     {

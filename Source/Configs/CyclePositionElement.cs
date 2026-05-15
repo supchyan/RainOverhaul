@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RainOverhaul.Source.Audio;
-using RainOverhaul.Source.Math;
+using RainOverhaul.Source.Tools;
 using RainOverhaul.Source.UI;
 using System;
 using Terraria;
@@ -313,7 +313,7 @@ public class CyclePositionElement : ConfigElement
                 valueSavedTextAlpha = 255;
 
                 // play some rainworld sound
-                SoundEngine.PlaySound(ROSoundStyle.DeathSound with { Volume = 3f });
+                SoundEngine.PlaySound(ROSoundStyle.Death with { Volume = 3f });
             }
         }
     }

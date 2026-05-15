@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace RainOverhaul.Source.Math;
+namespace RainOverhaul.Source.Tools;
 
-public static class MathEx
+public static class MathTools
 {
     /// <summary>
     /// Emulates Vector2.Lerp(), but for a `float` type.
@@ -15,5 +15,14 @@ public static class MathEx
     {
         var value = Vector2.Lerp(new Vector2(from, 0f), new Vector2(to, 0f), weight).X;
         return MathF.Round(value, 4);
+    }
+    /// <summary>
+    /// Converts seconds to ticks.
+    /// </summary>
+    /// <param name="s">Seconds value.</param>
+    public static int ToTicks(float s)
+    {
+        // 1 s = 60 ticks
+        return (int)MathF.Round(s * 60f);
     }
 }

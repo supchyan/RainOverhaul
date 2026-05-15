@@ -10,7 +10,7 @@ namespace RainOverhaul.Source.Buffs;
 /// </summary>
 public class RainSystemDebuff : ModBuff
 {
-    public override string Texture => "RainOverhaul/Content/Textures/ShelterIcon";
+    public override string Texture => "RainOverhaul/Content/Textures/shelterIcon";
 
     public override void SetStaticDefaults()
     {
@@ -19,23 +19,29 @@ public class RainSystemDebuff : ModBuff
     }
 
     public override void Update(Player player, ref int buffIndex)
-    {   
+    {
         base.Update(player, ref buffIndex);
 
-        // rain won't affect player using cute fishron mount
-        if(player.mount._type != MountID.CuteFishron)
+        if (Main.maxRaining > .4f)
         {
-            player.mount.Dismount(player);
+            // rain won't affect player using cute fishron mount
+            if (player.mount._type != MountID.CuteFishron)
+            {
+                player.mount.Dismount(player);
 
-            player.velocity += new Vector2(0, MathF.Abs(player.velocity.Y));
+                player.velocity += new Vector2(0, MathF.Abs(player.velocity.Y));
+            }
+
+            player.lifeRegen -= (int)MathF.Round(Main.maxRaining * (24000f / 120f));
         }
-
-        player.lifeRegen -= 24000 / 120;
     }
     public override void Update(NPC npc, ref int buffIndex)
     {
         base.Update(npc, ref buffIndex);
 
-        npc.lifeRegen -= 120000 / 120;
+        if (Main.maxRaining > .4f)
+        {
+            npc.lifeRegen -= (int)MathF.Round(Main.maxRaining * (120000f / 120f));
+        }
     }
 }
